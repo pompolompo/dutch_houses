@@ -5,8 +5,11 @@
 # description: reads data of dutch housing and selects random subset of observation
 # modified by: Ferran Garcia, @pompolompo
 # modified on: 25-02-2024
-# modified by: Sílvia Rovira, @silrovira
+# modified by: Silvia Rovira
 # modified on: 25-02-2024
+# modified by: Elies Roman
+# modified on: 25-02-2024
+
 
 # Libraries ---------------------------------------------------------------
 library(readxl)
@@ -41,6 +44,7 @@ tbl_houses[["busy_street"]] <- gsub(
   x = tbl_houses[["busy_street"]],
   pattern = "2",
   replacement = "1")
+
 
 tbl_houses<-subset(tbl_houses, floor_area!=0)
 
