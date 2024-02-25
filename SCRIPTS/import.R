@@ -5,12 +5,15 @@
 # description: reads data of dutch housing and selects random subset of observation
 # modified by: Ferran Garcia, @pompolompo
 # modified on: 25-02-2024
+# modified by: Sílvia Rovira, @silrovira
+# modified on: 25-02-2024
 
 # Libraries ---------------------------------------------------------------
 library(readxl)
 
 # Global Options --------------------------------------------------------------
 wd <- "/home/ferran/Documents/Universitat/MULTI/dutch_houses"
+wd<-"C:/Users/hp/Documents/dutch_houses"
 file <- "/dutch_houses.xlsx"
 outputname <- "subset_houses"
 
@@ -33,6 +36,10 @@ selected_obs <- sample(x = 1:nrow(tbl_houses),
                        size = subset_obs,
                        replace = FALSE)
 tbl_houses_subset <- tbl_houses[selected_obs, ]
+
+# Noves variables ---------------------------------------------------------
+
+tbl_houses_subset[,"price_metre"]<-tbl_houses_subset[,"sale_price"]/tbl_houses_subset[,"floor_area"]
 
 # Save .Rdata -------------------------------------------------------------
 
