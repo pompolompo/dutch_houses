@@ -43,7 +43,7 @@ tbl_houses[["busy_street"]] <- gsub(
   pattern = "2",
   replacement = "1")
 
-tbl_houses<-subset(tbl_houses, floor_area!=0)
+
 
 set.seed(seed = arrel)
 selected_obs <- sample(x = 1:nrow(tbl_houses), 
