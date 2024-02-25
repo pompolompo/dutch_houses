@@ -3,6 +3,8 @@
 # written on: 23-02-2024
 # purpose: import dataset
 # description: reads data of dutch housing and selects random subset of observation
+# modified by: Ferran Garcia, @pompolompo
+# modified on: 25-02-2024
 
 # Libraries ---------------------------------------------------------------
 library(readxl)
@@ -21,6 +23,11 @@ tbl_houses <- readxl::read_excel(
   )
 
 # Subset ------------------------------------------------------------------
+tbl_houses[["busy_street"]] <- gsub(
+  x = tbl_houses[["busy_street"]],
+  pattern = "2",
+  replacement = "1")
+
 set.seed(seed = arrel)
 selected_obs <- sample(x = 1:nrow(tbl_houses), 
                        size = subset_obs,
