@@ -7,8 +7,7 @@
 # modified on: 25-02-2024
 # modified by: Sílvia Rovira, @silrovira
 # modified on: 25-02-2024
-# modified by: Elies Roman
-# modified on: 25-02-2024
+
 # Libraries ---------------------------------------------------------------
 library(readxl)
 
