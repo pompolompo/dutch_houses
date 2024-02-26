@@ -65,7 +65,44 @@ par(ask=TRUE)
 for(k in num_var_ind_cont){boxplot(tbl_houses_subset[,k], xlab = names(tbl_houses_subset)[k], main = paste("Boxplot de", names(tbl_houses_subset)[k]))}
 par(ask=FALSE)
 
+### Numèriques disctretes
+
+var_num_disc<-c(7,13)
+
+
+par(ask=TRUE)
+for(k in var_num_disc){barplot(table(tbl_houses_subset[,k]), ylab = "Frequency", xlab = names(tbl_houses_subset)[k],main = paste("Barplot de", names(tbl_houses_subset)[k]))}
+par(ask=FALSE)
+
+
 ## Variables categòriques --------------------------------------------------
+
+var_cat<-c(1,3,4,8,9,10,15,16,17)
+
+par(ask=TRUE)
+for(k in var_cat){barplot(table(tbl_houses_subset[,k]), ylab = "Frequency", xlab = names(tbl_houses_subset)[k],main = paste("Barplot de", names(tbl_houses_subset)[k]))}
+par(ask=FALSE)
+
+table(tbl_houses_subset[,"city"])
+table(tbl_houses_subset[,"type"])
+table(tbl_houses_subset[,"construction_period"])
+table(tbl_houses_subset[,"interior_condition"])
+table(tbl_houses_subset[,"exterior_condition"])
+table(tbl_houses_subset[,"year"])
+table(tbl_houses_subset[,"house_id"])
+table(tbl_houses_subset[,"postcode"])
+table(tbl_houses_subset[,"energy_label"])
+
+## Variables categòriques binàries
+
+var_bin<-c(2,14)
+
+par(ask=TRUE)
+for(k in var_bin){barplot(table(tbl_houses_subset[,k]), ylab = "Frequency", xlab = names(tbl_houses_subset)[k],main = paste("Barplot de", names(tbl_houses_subset)[k]))}
+par(ask=FALSE)
+
+table(tbl_houses_subset[,"apartment"])
+table(tbl_houses_subset[,"busy_street"])
 
 # Descriptiva bivariant ---------------------------------------------------
 
