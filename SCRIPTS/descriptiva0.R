@@ -47,24 +47,6 @@ fact_var_ind <- sapply(
 
 ## Variables numèriques ----------------------------------------------------
 
-### Numèriques contínues
-
-library(psych)
-psych::describe(tbl_houses_subset[, "parcel_size"])
-psych::describe(tbl_houses_subset[, "floor_area"])
-psych::describe(tbl_houses_subset[, "sale_price"])
-psych::describe(tbl_houses_subset[, "price_metre"])
-
-num_var_ind_cont <- c(5,6,12,18)
-
-par(ask=TRUE)
-for(k in num_var_ind_cont){hist(tbl_houses_subset[,k], xlab = names(tbl_houses_subset)[k], main = paste("Histograma de", names(tbl_houses_subset)[k]))}
-par(ask=FALSE)
-
-par(ask=TRUE)
-for(k in num_var_ind_cont){boxplot(tbl_houses_subset[,k], xlab = names(tbl_houses_subset)[k], main = paste("Boxplot de", names(tbl_houses_subset)[k]))}
-par(ask=FALSE)
-
 ## Variables categòriques --------------------------------------------------
 
 # Descriptiva bivariant ---------------------------------------------------
