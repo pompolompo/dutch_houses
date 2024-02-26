@@ -58,11 +58,11 @@ psych::describe(tbl_houses_subset[, "price_metre"])
 num_var_ind_cont <- c(5,6,12,18)
 
 par(ask=TRUE)
-for(k in num_var_ind_cont){hist(tbl_houses_subset[,k], main = paste("Histograma de", names(tbl_houses_subset)[k]))}
+for(k in num_var_ind_cont){hist(tbl_houses_subset[,k], xlab = names(tbl_houses_subset)[k], main = paste("Histograma de", names(tbl_houses_subset)[k]))}
 par(ask=FALSE)
 
 par(ask=TRUE)
-for(k in num_var_ind_cont){boxplot(tbl_houses_subset[,k], main = paste("Boxplot de", names(tbl_houses_subset)[k]))}
+for(k in num_var_ind_cont){boxplot(tbl_houses_subset[,k], xlab = names(tbl_houses_subset)[k], main = paste("Boxplot de", names(tbl_houses_subset)[k]))}
 par(ask=FALSE)
 
 ## Variables categòriques --------------------------------------------------
