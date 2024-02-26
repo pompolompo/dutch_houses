@@ -52,20 +52,31 @@ fact_var_ind <- sapply(
 ### Numèriques contínues
 
 library(psych)
-psych::describe(tbl_houses_subset[, "parcel_size"])
-psych::describe(tbl_houses_subset[, "floor_area"])
-psych::describe(tbl_houses_subset[, "sale_price"])
-psych::describe(tbl_houses_subset[, "price_metre"])
+library(kableExtra)
 
+desc_parcel_size <- as.data.frame(psych::describe(tbl_houses_subset[, "parcel_size"]))
+kable(desc_parcel_size, caption = "Anàlisi descriptiu: variable parcel_size") %>% kable_styling(full_width = FALSE)
+
+desc_floor_area <- as.data.frame(psych::describe(tbl_houses_subset[, "floor_area"]))
+kable(desc_floor_area, caption = "Anàlisi descriptiu: variable floor_area") %>% kable_styling(full_width = FALSE)
+
+desc_sale_price <- as.data.frame(psych::describe(tbl_houses_subset[, "sale_price"]))
+kable(desc_sale_price, caption = "Anàlisi descriptiu: variable sale_price") %>% kable_styling(full_width = FALSE)
+
+desc_price_metre <- as.data.frame(psych::describe(tbl_houses_subset[, "price_metre"]))
+kable(desc_price_metre, caption = "Anàlisi descriptiu: variable price_metre") %>% kable_styling(full_width = FALSE)
+
+
+library(ggplot2)
 num_var_ind_cont <- c(5,6,12,18)
 
-par(ask=TRUE)
-for(k in num_var_ind_cont){hist(tbl_houses_subset[,k], xlab = names(tbl_houses_subset)[k], main = paste("Histograma de", names(tbl_houses_subset)[k]))}
-par(ask=FALSE)
+for(k in num_var_ind_cont){
+  print(ggplot(tbl_houses_subset, aes(x=!!sym(names(tbl_houses_subset)[k]))) + geom_histogram())
+}
 
-par(ask=TRUE)
-for(k in num_var_ind_cont){boxplot(tbl_houses_subset[,k], xlab = names(tbl_houses_subset)[k], main = paste("Boxplot de", names(tbl_houses_subset)[k]))}
-par(ask=FALSE)
+for(k in num_var_ind_cont){
+  print(ggplot(tbl_houses_subset, aes(x="", y=!!sym(names(tbl_houses_subset)[k]))) + geom_boxplot())
+}
 
 ### Numèriques disctretes
 
