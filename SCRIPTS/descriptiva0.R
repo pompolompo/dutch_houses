@@ -5,6 +5,8 @@
 # description: exploratory decription before imputation of NA's
 # modified by: Clara Tarragó, @claratg15
 # modified on: 26-02-2024
+# modified by: Sílvia Rovira, @silrovira
+# modified on: 26-02-2024
 
 # Libraries ---------------------------------------------------------------
 
