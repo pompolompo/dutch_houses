@@ -7,7 +7,7 @@
 # modified on: 26-02-2024
 # modified by: Sílvia Rovira, @silrovira
 # modified on: 26-02-2024
-# modified by: Bernat Padrosa, @bernat77
+# modified by: Bernat Padrosa, @bernat16
 # modified on: 27-02-2024
 
 # Libraries ---------------------------------------------------------------
