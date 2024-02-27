@@ -154,6 +154,20 @@ kable(desc_city, caption = "Anàlisi descriptiu: variable busy_street") %>% kabl
 
 ## Variables categòriques --------------------------------------------------
 
+## Variables categòriques i numèriques -------------------------------------
+
+library(ggplot2)
+path<- ("D:/3rCURSESTADISTICA/multi")
+categoriques<- c(1,2,3,4,8,9,10,11,14,17)
+numeriques<- c(5,6,7,12,13,18)
+pdf(paste0(path,"DescriptivaBivariant.pdf"))
+for(i in 1:length(categoriques)){
+  for(j in 1:length(numeriques)){
+    print(ggplot(tbl_houses_subset,aes(x=!!sym(names(tbl_houses_subset)[categoriques[i]]),y=!!sym(names(tbl_houses_subset)[numeriques[j]])),ylab=names(tbl_houses_subset[numeriques[j]])) + geom_boxplot())
+  }
+}
+dev.off()
+
 
 
 
