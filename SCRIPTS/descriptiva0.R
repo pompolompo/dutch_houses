@@ -158,7 +158,10 @@ numeriques<- c(5,6,7,12,13,18)
 pdf(paste0(path,"Descriptiva_bivariant_numeriques.pdf"))
 for(i in 1:length(numeriques)){
   for(j in i+1:length(numeriques)){
-    print(ggplot(tbl_houses_subset,aes(x=(names(tbl_houses_subset)[numeriques[i]]),y=(names(tbl_houses_subset)[numeriques[j]]))) + geom_point())
+    if(j<= length(numeriques)){
+    print(ggplot(tbl_houses_subset,aes(x=!!sym(names(tbl_houses_subset)[numeriques[i]]),y=!!sym(names(tbl_houses_subset)[numeriques[j]])),ylab=names(tbl_houses_subset[numeriques[j]])) + geom_point())
+    
+    }
   }
 }
 dev.off()
