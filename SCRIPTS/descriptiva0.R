@@ -157,6 +157,7 @@ kable(desc_city, caption = "Anàlisi descriptiu: variable busy_street") %>% kabl
 ## Variables categòriques i numèriques -------------------------------------
 
 library(ggplot2)
+
 path<- ("D:/3rCURSESTADISTICA/multi")
 categoriques<- c(1,2,3,4,8,9,10,11,14,17)
 numeriques<- c(5,6,7,12,13,18)
