@@ -153,6 +153,15 @@ kable(desc_city, caption = "Anàlisi descriptiu: variable busy_street") %>% kabl
 # Descriptiva bivariant ---------------------------------------------------
 
 ## Variables numèriques ----------------------------------------------------
+path <- ("C:/Users/judit/Desktop/uni/3r/2nquatri/multi/treball")
+numeriques<- c(5,6,7,12,13,18)
+pdf(paste0(path,"Descriptiva_bivariant_numeriques.pdf"))
+for(i in 1:length(numeriques)){
+  for(j in i+1:length(numeriques)){
+    print(ggplot(tbl_houses_subset,aes(x=(names(tbl_houses_subset)[numeriques[i]]),y=(names(tbl_houses_subset)[numeriques[j]]))) + geom_point())
+  }
+}
+dev.off()
 
 ## Variables categòriques --------------------------------------------------
 
