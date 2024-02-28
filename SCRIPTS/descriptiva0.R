@@ -213,7 +213,7 @@ dev.off()
 # modified on: 27-02-2024
 
 path<- ("D:/3rCURSESTADISTICA/multi")
-categoriques<- c(1,2,3,4,8,9,10,11,14,17)
+categoriques<- c(1,2,3,4,8,9,10,14,17)
 numeriques<- c(5,6,7,12,13,18)
 pdf(paste0(path,"DescriptivaBivariant.pdf"))
 for(i in 1:length(categoriques)){
