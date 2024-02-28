@@ -3,87 +3,107 @@
 # written on: 24-02-2024
 # purpose: decribe dataset
 # description: exploratory decription before imputation of NA's
-# modified by: Clara Tarragó, @claratg15
-# modified on: 26-02-2024
-# modified by: Sílvia Rovira, @silrovira
-# modified on: 26-02-2024
-# modified by: Bernat Padrosa, @bernat16
-# modified on: 27-02-2024
 
 # Libraries ---------------------------------------------------------------
+#library(kableExtra)
+library(psych)
+library(ggplot2)
+
 
 # Global Options ----------------------------------------------------------
 wd <- "/home/ferran/Documents/Universitat/MULTI/dutch_houses"
 file <- "/subset_houses.RData"
+
   
 # Import ------------------------------------------------------------------
 load(
   paste0(wd, "/DATA", file)
 )
 
-# Tipologia Variables -----------------------------------------------------
-
-str(tbl_houses_subset)
-
-num_var_ind <- sapply(
-  X = tbl_houses_subset,
-  FUN = is.numeric
-  ) |>
-  which()
-
-char_var_ind <- sapply(
-  X = tbl_houses_subset,
-  FUN = is.character
-) |>
-  which()
-
-fact_var_ind <- sapply(
-  X = tbl_houses_subset,
-  FUN = is.factor
-) |>
-  which()
-
-# @pompolompo, 24-02-2024
-# cal canviar la tipologia d'algunes variables
-# en general la majoria de strings han de ser factors
 
 # Descriptiva Univariant --------------------------------------------------
 
 ## Variables numèriques ----------------------------------------------------
 
-### Numèriques contínues
+### Numèriques contínues ----------------------------------------------------
+# modified by: Clara Tarragó, @claratg15
+# modified on: 26-02-2024
+# modified by: Ferran Garcia, @pompolompo
+# modified on: 28-02-2024
 
-library(psych)
-library(kableExtra)
+nom_contingut <- "desc0_taules_cont.RData"
 
-desc_parcel_size <- as.data.frame(psych::describe(tbl_houses_subset[, "parcel_size"]))
-kable(desc_parcel_size, caption = "Anàlisi descriptiu: variable parcel_size") %>% kable_styling(full_width = FALSE)
+taules_cont <- list(
+  parcel_size = psych::describe(tbl_dades[["parcel_size"]]),
+  floor_area = psych::describe(tbl_dades[["floor_area"]]),
+  sale_price = psych::describe(tbl_dades[["sale_price"]]),
+  price_metre = psych::describe(tbl_dades[["price_metre"]])
+)
 
-desc_floor_area <- as.data.frame(psych::describe(tbl_houses_subset[, "floor_area"]))
-kable(desc_floor_area, caption = "Anàlisi descriptiu: variable floor_area") %>% kable_styling(full_width = FALSE)
+caption_cont <- list(
+  parcel_size = "Anàlisi descriptiu: variable parcel_size",
+  floor_area = "Anàlisi descriptiu: variable floor_area",
+  sale_price = "Anàlisi descriptiu: variable sale_price",
+  price_metre = "Anàlisi descriptiu: variable price_metre"
+)
 
-desc_sale_price <- as.data.frame(psych::describe(tbl_houses_subset[, "sale_price"]))
-kable(desc_sale_price, caption = "Anàlisi descriptiu: variable sale_price") %>% kable_styling(full_width = FALSE)
+save(
+  taules_cont, caption_cont, 
+  file = paste0(wd, "/FIGURES/DESC0/TAULES/", nom_contingut)
+)
 
-desc_price_metre <- as.data.frame(psych::describe(tbl_houses_subset[, "price_metre"]))
-kable(desc_price_metre, caption = "Anàlisi descriptiu: variable price_metre") %>% kable_styling(full_width = FALSE)
+nb_num <- sapply(
+  X = tbl_dades,
+  FUN = is.numeric
+) |> which() |>
+  names()
 
-
-library(ggplot2)
-num_var_ind_cont <- c(5,6,12,18)
-
-for(k in num_var_ind_cont){
-  print(ggplot(tbl_houses_subset, aes(x=!!sym(names(tbl_houses_subset)[k]))) + geom_histogram())
+for(nb_var in nb_num){
+  ggplot2::ggplot(
+    data = tbl_dades,
+    mapping = aes(x = .data[[nb_var]])
+  ) + ggplot2::geom_histogram(
+    bins = 30
+  ) + ggplot2::labs(
+    title = paste0("Histograma de: ", nb_var),
+    x = nb_var,
+    y = NULL
+  ) + theme_bw()
+  
+  ggsave(
+    filename = paste0(wd, "/FIGURES/DESC0/GRAFS/",
+                      "hist_", nb_var, ".png"),
+    width = 2000, 
+    height = 1500, 
+    units = "px"
+  )
+  
+  ggplot2::ggplot(
+    data = tbl_dades,
+    mapping = aes(x = "", 
+                  y = .data[[nb_var]])
+  ) + ggplot2::geom_violin() + 
+    ggplot2::labs(
+      title = paste0("Violinplot de: ", nb_var),
+      x = nb_var,
+      y = NULL
+    ) + theme_bw()
+  
+  ggsave(
+    filename = paste0(wd, "/FIGURES/DESC0/GRAFS/",
+                      "violin_", nb_var, ".png"),
+    width = 2000, 
+    height = 1500, 
+    units = "px"
+  )  
 }
 
-for(k in num_var_ind_cont){
-  print(ggplot(tbl_houses_subset, aes(x="", y=!!sym(names(tbl_houses_subset)[k]))) + geom_boxplot())
-}
 
-### Numèriques disctretes
+### Numèriques disctretes ---------------------------------------------------
+# modified by: Sílvia Rovira, @silrovira
+# modified on: 26-02-2024
 
 var_num_disc<-c(7,13)
-
 
 for(k in var_num_disc){
   print(ggplot(tbl_houses_subset, aes(x=!!sym(names(tbl_houses_subset)[k]))) + geom_bar())
@@ -96,15 +116,17 @@ desc_city <- as.data.frame(table(tbl_houses_subset[, "time_on_market"]))
 kable(desc_city, caption = "Anàlisi descriptiu: variable time_on_market") %>% kable_styling(full_width = FALSE)
 
 
-
 ## Variables categòriques --------------------------------------------------
+
+### Categòriques amb més de 2 nivells ---------------------------------------
+# modified by: Sílvia Rovira, @silrovira
+# modified on: 26-02-2024
 
 var_cat<-c(1,3,4,8,9,10,15,16,17)
 
 for(k in var_cat){
   print(ggplot(tbl_houses_subset, aes(x=!!sym(names(tbl_houses_subset)[k]))) + geom_bar())
 }
-
 
 desc_city <- as.data.frame(table(tbl_houses_subset[, "city"]))
 kable(desc_city, caption = "Anàlisi descriptiu: variable city") %>% kable_styling(full_width = FALSE)
@@ -134,14 +156,15 @@ desc_city <- as.data.frame(table(tbl_houses_subset[, "energy_label"]))
 kable(desc_city, caption = "Anàlisi descriptiu: variable energy_label") %>% kable_styling(full_width = FALSE)
 
 
-## Variables categòriques binàries
+### Categòriques binàries ---------------------------------------
+# modified by: Sílvia Rovira, @silrovira
+# modified on: 26-02-2024
 
 var_bin<-c(2,14)
 
 for(k in var_bin){
   print(ggplot(tbl_houses_subset, aes(x=!!sym(names(tbl_houses_subset)[k]))) + geom_bar())
 }
-
 
 desc_city <- as.data.frame(table(tbl_houses_subset[, "apartment"]))
 kable(desc_city, caption = "Anàlisi descriptiu: variable apartment") %>% kable_styling(full_width = FALSE)
@@ -169,8 +192,8 @@ dev.off()
 ## Variables categòriques --------------------------------------------------
 
 ## Variables categòriques i numèriques -------------------------------------
-
-library(ggplot2)
+# modified by: Bernat Padrosa, @bernat16
+# modified on: 27-02-2024
 
 path<- ("D:/3rCURSESTADISTICA/multi")
 categoriques<- c(1,2,3,4,8,9,10,11,14,17)
@@ -182,7 +205,3 @@ for(i in 1:length(categoriques)){
   }
 }
 dev.off()
-
-
-
-
