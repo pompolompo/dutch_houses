@@ -125,17 +125,25 @@ for(nb_var in nb_num){
 # modified by: Sílvia Rovira, @silrovira
 # modified on: 26-02-2024
 
-var_num_disc<-c(7,13)
+path<-("C:/Users/hp/Documents/dutch_houses")
 
-for(k in var_num_disc){
-  print(ggplot(tbl_houses_subset, aes(x=!!sym(names(tbl_houses_subset)[k]))) + geom_bar())
+var_num_disc<-c(7,13)
+noms_var<-names(tbl_houses_subset)
+
+for(i in var_num_disc){
+  df <- as.data.frame(psych::describe(tbl_houses_subset[, i]))
+  print(kable(df, caption = paste0("Anàlisi descriptiu: variable", " ", names(tbl_houses_subset[i]))) %>% kable_styling(full_width = FALSE))
 }
 
-desc_city <- as.data.frame(table(tbl_houses_subset[, "rooms"]))
-kable(desc_city, caption = "Anàlisi descriptiu: variable rooms") %>% kable_styling(full_width = FALSE)
 
-desc_city <- as.data.frame(table(tbl_houses_subset[, "time_on_market"]))
-kable(desc_city, caption = "Anàlisi descriptiu: variable time_on_market") %>% kable_styling(full_width = FALSE)
+
+for(k in var_num_disc){
+  png(filename=paste0(path,"/FIGURES/DESC0/GRAFS/","grafic_barres_", noms_var[k], ".png"),  width = 1000, height = 750, units = "px")
+  print(ggplot(tbl_houses_subset, aes(x=!!sym(names(tbl_houses_subset)[k]))) + geom_bar())
+  dev.off()
+}
+
+
 
 
 ## Variables categòriques --------------------------------------------------
@@ -146,36 +154,19 @@ kable(desc_city, caption = "Anàlisi descriptiu: variable time_on_market") %>% k
 
 var_cat<-c(1,3,4,8,9,10,15,16,17)
 
+
 for(k in var_cat){
+  png(filename=paste0(path,"/FIGURES/DESC0/GRAFS/","grafic_barres_", noms_var[k], ".png"),  width = 1000, height = 750, units = "px")
   print(ggplot(tbl_houses_subset, aes(x=!!sym(names(tbl_houses_subset)[k]))) + geom_bar())
+  dev.off()
 }
 
-desc_city <- as.data.frame(table(tbl_houses_subset[, "city"]))
-kable(desc_city, caption = "Anàlisi descriptiu: variable city") %>% kable_styling(full_width = FALSE)
 
-desc_city <- as.data.frame(table(tbl_houses_subset[, "type"]))
-kable(desc_city, caption = "Anàlisi descriptiu: variable type") %>% kable_styling(full_width = FALSE)
+for(i in var_cat){
+  df <- as.data.frame(table(tbl_houses_subset[, i]))
+  print(kable(df, caption = paste0("Anàlisi descriptiu: variable", " ", names(tbl_houses_subset[i]))) %>% kable_styling(full_width = FALSE))
+}
 
-desc_city <- as.data.frame(table(tbl_houses_subset[, "construction_period"]))
-kable(desc_city, caption = "Anàlisi descriptiu: variable construction_period") %>% kable_styling(full_width = FALSE)
-
-desc_city <- as.data.frame(table(tbl_houses_subset[, "interior_condition"]))
-kable(desc_city, caption = "Anàlisi descriptiu: variable interior_condition") %>% kable_styling(full_width = FALSE)
-
-desc_city <- as.data.frame(table(tbl_houses_subset[, "exterior_condition"]))
-kable(desc_city, caption = "Anàlisi descriptiu: variable exterior_condition") %>% kable_styling(full_width = FALSE)
-
-desc_city <- as.data.frame(table(tbl_houses_subset[, "year"]))
-kable(desc_city, caption = "Anàlisi descriptiu: variable year") %>% kable_styling(full_width = FALSE)
-
-desc_city <- as.data.frame(table(tbl_houses_subset[, "house_id"]))
-kable(desc_city, caption = "Anàlisi descriptiu: variable house_id") %>% kable_styling(full_width = FALSE)
-
-desc_city <- as.data.frame(table(tbl_houses_subset[, "postcode"]))
-kable(desc_city, caption = "Anàlisi descriptiu: variable postcode") %>% kable_styling(full_width = FALSE)
-
-desc_city <- as.data.frame(table(tbl_houses_subset[, "energy_label"]))
-kable(desc_city, caption = "Anàlisi descriptiu: variable energy_label") %>% kable_styling(full_width = FALSE)
 
 
 ### Categòriques binàries ---------------------------------------
@@ -185,19 +176,22 @@ kable(desc_city, caption = "Anàlisi descriptiu: variable energy_label") %>% kab
 var_bin<-c(2,14)
 
 for(k in var_bin){
+  png(filename=paste0(path,"/FIGURES/DESC0/GRAFS/","grafic_barres_", noms_var[k], ".png"),  width = 1000, height = 750, units = "px")
   print(ggplot(tbl_houses_subset, aes(x=!!sym(names(tbl_houses_subset)[k]))) + geom_bar())
 }
 
-desc_city <- as.data.frame(table(tbl_houses_subset[, "apartment"]))
-kable(desc_city, caption = "Anàlisi descriptiu: variable apartment") %>% kable_styling(full_width = FALSE)
-
-desc_city <- as.data.frame(table(tbl_houses_subset[, "busy_street"]))
-kable(desc_city, caption = "Anàlisi descriptiu: variable busy_street") %>% kable_styling(full_width = FALSE)
+for(i in var_bin){
+  df <- as.data.frame(table(tbl_houses_subset[, i]))
+  print(kable(df, caption = paste0("Anàlisi descriptiu: variable", " ", names(tbl_houses_subset[i]))) %>% kable_styling(full_width = FALSE))
+}
 
 
 # Descriptiva bivariant ---------------------------------------------------
 
 ## Variables numèriques ----------------------------------------------------
+# modified by: Judit Costa, @juditcosta
+# modified on: 27-02-2024
+
 path <- ("C:/Users/judit/Desktop/uni/3r/2nquatri/multi/treball")
 numeriques<- c(5,6,7,12,13,18)
 pdf(paste0(path,"Descriptiva_bivariant_numeriques.pdf"))
