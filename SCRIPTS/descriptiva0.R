@@ -52,6 +52,7 @@ for(k in num_var_ind_cont){
   print(ggplot(tbl_houses_subset, aes(x="", y=!!sym(names(tbl_houses_subset)[k]))) + geom_boxplot())
 }
 
+#### --------------
 
 nom_contingut <- "desc0_taules_cont.RData"
 
