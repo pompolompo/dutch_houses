@@ -4,19 +4,15 @@
 # purpose: import dataset
 # description: reads data of dutch housing and selects random subset of observation
 # modified by: Ferran Garcia, @pompolompo
-# modified on: 25-02-2024
-# modified by: Sílvia Rovira, @silrovira
-# modified on: 25-02-2024
-# modified by: Elies Roman
-# modified on: 25-02-2024
+# modified on: 28-02-2024
+
+
 # Libraries ---------------------------------------------------------------
 library(readxl)
 
 
 # Global Options --------------------------------------------------------------
 wd <- "/home/ferran/Documents/Universitat/MULTI/dutch_houses"
-wd<-"C:/Users/hp/Documents/dutch_houses"
-wd<-"C:/Users/maria/OneDrive/Desktop/multi"
 
 file <- "/dutch_houses.xlsx"
 outputname <- "subset_houses"
@@ -30,11 +26,20 @@ tbl_houses <- readxl::read_excel(
   )
 
 
+# Canvi tipologia variables -----------------------------------------------
+ind_factors <- sapply(
+  X = tbl_houses,
+  FUN = is.character
+) |> which()
+
+tbl_houses[, ind_factors] <- lapply(
+  X = tbl_houses[, ind_factors],
+  FUN = as.factor
+)
+
 
 # Noves variables ---------------------------------------------------------
-
-tbl_houses[,"price_metre"]<-tbl_houses[,"sale_price"]/tbl_houses[,"floor_area"]
-
+tbl_houses[["price_metre"]] <- tbl_houses[["sale_price"]] / tbl_houses[["floor_area"]]
 
 
 # Subset ------------------------------------------------------------------
@@ -42,8 +47,6 @@ tbl_houses[["busy_street"]] <- gsub(
   x = tbl_houses[["busy_street"]],
   pattern = "2",
   replacement = "1")
-
-
 
 set.seed(seed = arrel)
 selected_obs <- sample(x = 1:nrow(tbl_houses), 
@@ -53,7 +56,6 @@ tbl_houses_subset <- tbl_houses[selected_obs, ]
 
 
 # Save .Rdata -------------------------------------------------------------
-
 save(
   tbl_houses_subset,
   file = paste0(wd, "/DATA/", outputname, ".RData")
