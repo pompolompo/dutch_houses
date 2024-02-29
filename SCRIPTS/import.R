@@ -61,3 +61,14 @@ save(
   file = paste0(wd, "/DATA/", outputname, ".RData")
     )
 
+
+#### Afegir NA-----------------------------------------------------------
+
+num<- sample(5000,20)
+cat<- sample(5000,20)
+
+for(i in 1:length(num)){
+  tbl_houses_subset[num[i],"time_on_market"]<- NA
+  tbl_houses_subset[cat,"interior_condition"]<- NA
+}
+
