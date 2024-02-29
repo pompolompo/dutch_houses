@@ -1,0 +1,50 @@
+---
+title: 'Entrega 2: Descriptiva'
+author: "Grup X"
+date: "2024-02-28"
+output: 
+ pdf_document:
+   toc: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# libraries
+library(knitr)
+```
+
+
+```{r}
+# global options
+wd <- "/home/ferran/Documents/Universitat/MULTI/dutch_houses"
+```
+
+
+```{r, echo=FALSE}
+# aquí importo les dades
+load(
+  paste0(wd, "/FIGURES/DESC0/TAULES/", "desc0_taules_cont.RData")
+)
+```
+
+\newpage
+
+## Taules
+
+cal utilitzar el format kableExtra i posar-ho més maco
+```{r}
+knitr::kable(taules_cont[["parcel_size"]])
+```
+
+## Gràfics
+
+un exemple de com incorporar una imatge
+```{r}
+knitr::include_graphics(
+  path = paste0(wd, "/FIGURES/DESC0/GRAFS/", "hist_floor_area.png")
+)
+```
+
