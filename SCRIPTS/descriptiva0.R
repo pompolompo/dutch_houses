@@ -206,6 +206,43 @@ for(i in 1:length(numeriques)){
 }
 dev.off()
 
+################################################ no va
+## Variables numèriques pdf
+path <- ("C:/Users/judit/Desktop/uni/3r/2nquatri/multi/treball/")
+numeriques<- c(5,6,7,12,13,18)
+pdf(paste0(path,"Descriptiva_bivariant_numeriques.pdf"))
+for(i in 1:length(numeriques)){
+  for(j in i+1:length(numeriques)){
+    if(j<= length(numeriques)){
+      print(ggplot(tbl_houses_subset,aes(x=!!sym(names(tbl_houses_subset)[numeriques[i]]),y=!!sym(names(tbl_houses_subset)[numeriques[j]])),ylab=names(tbl_houses_subset[numeriques[j]])) + geom_point())
+    }
+  }
+}
+dev.off()
+
+#png
+path <- ("C:/Users/judit/Desktop/uni/3r/2nquatri/multi/treball/")
+numeriques<- c(5,6,7,12,13,18)
+for(i in 1:length(numeriques)){
+  for(j in i+1:length(numeriques)){
+    if(j<= length(numeriques)){
+      png(filename=paste0(path,"scatterplot_", noms_var[i], ".png"),  width = 1000, height = 750, units = "px")
+      print(ggplot(tbl_houses_subset,aes(x=!!sym(names(tbl_houses_subset)[numeriques[i]]),y=!!sym(names(tbl_houses_subset)[numeriques[j]])),ylab=names(tbl_houses_subset[numeriques[j]])) + geom_point())
+    }
+  }
+}
+
+pdf(paste0(path,"Analisi_descriptiu_bivariant_numeriques.pdf"))
+for(i in 1:length(numeriques)){
+  for(j in i+1:length(numeriques)){
+    if(j<= length(numeriques)){
+      df <- as.data.frame(table(tbl_houses_subset[,i]))
+      print(kable(df,caption=paste0("Anàlisi descriptiu: variable", " ", names(tbl_houses_subset[i]))) %>% kable_styling(full_width=FALSE))
+    }
+  }
+}
+#######################################
+
 ## Variables categòriques --------------------------------------------------
 
 ## Variables categòriques i numèriques -------------------------------------
