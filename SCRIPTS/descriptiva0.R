@@ -139,12 +139,12 @@ for(i in var_num_disc){
 
 
 for(k in var_num_disc){
-  png(filename=paste0(path,"/FIGURES/DESC0/GRAFS/","grafic_barres_", noms_var[k], ".png"),  width = 1000, height = 750, units = "px")
   print(ggplot(tbl_houses_subset, aes(x=!!sym(names(tbl_houses_subset)[k]))) + geom_bar())
-  dev.off()
+
 }
 
 
+print(ggplot(tbl_houses_subset, aes(x=!!sym(names(tbl_houses_subset)[7]))) + geom_bar())
 
 
 ## Variables categòriques --------------------------------------------------
