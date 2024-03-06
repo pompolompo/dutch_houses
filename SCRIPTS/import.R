@@ -62,14 +62,4 @@ save(
     )
 
 
-#### Afegir NA-----------------------------------------------------------
 
-num<- sample(5000,20)
-cat<- sample(5000,20)
-
-for(i in 1:length(num)){
-  tbl_houses_subset[num[i],"time_on_market"]<- NA
-  tbl_houses_subset[cat,"interior_condition"]<- NA
-}
-
-wd<-"C:/Users/hp/Documents/dutch_houses"
