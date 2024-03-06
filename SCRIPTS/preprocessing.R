@@ -12,7 +12,7 @@ load("D:/3rCURS/2. anàlisi multivariant/treball/subset_houses.RData")
 
 set.seed(12345)
 num<- sample(5000,20)
-set.seed(12345)
+set.seed(54321)
 cat<- sample(5000,20)
 
 ### Afegim NAs a les variables time_on_market i interior_condition
@@ -20,6 +20,10 @@ for(i in 1:length(num)){
   tbl_houses_subset[num[i],"time_on_market"]<- NA
   tbl_houses_subset[cat[i],"interior_condition"]<- NA
 }
+
+###comprovem quines son les posicions on hi ha NA
+which(is.na(tbl_houses_subset$time_on_market))
+which(is.na(tbl_houses_subset$interior_condition))
 
 ### Agafem els 0 de la variable floor_area, que no tenen sentit, i els passem a NA
 
@@ -48,6 +52,8 @@ save(
 library(naniar)
 mcar_test(tbl_houses_subset)
 # no sé perquè em surt p-valor de 0. Si algú s'ho pot mirar porfi
+# pot ser que sigui 0 pq els NA al ser generats de manera completament 
+# aleatòria no segueixen cap mena de distribució.
 
 ### MICE ----------------------------------------------------------------------
 
@@ -66,3 +72,14 @@ tbl_houses_subset <- complete(imp,1)
 
 
 
+
+### KNN  ----------------------------------------------------------------------
+
+library(multiUS)
+library(dplyr)
+tbl_houses_subset$interior_condition <- as.numeric(tbl_houses_subset$interior_condition)
+dfNA <- data.frame(floor_area = tbl_houses_subset$floor_area, time_on_market = tbl_houses_subset$time_on_market,interior_condition = tbl_houses_subset$interior_condition)
+names(dfNA)
+dfNoNA <- tbl_houses_subset[, !names(tbl_houses_subset) %in% names(dfNA)]
+df_KNN <- cbind(KNNimp(dfNA),dfNoNA)
+df_KNN <- df_KNN[,order(colnames(df_KNN))]
