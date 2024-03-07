@@ -33,6 +33,12 @@ for (i in 1:dim(tbl_houses_subset)[1]){
   }
 }
 
+### posem el outlier de parcel_size (9999999)a NA
+
+outlier_parcel_size<-which(tbl_houses_subset[,"parcel_size"]==9999999)
+tbl_houses_subset[outlier_parcel_size,"parcel_size"]<-NA
+
+
 ### Eliminem la variable price_metre. Una vegada imputem els valors NA de floor_area, la tornarem a crear
 tbl_houses_subset <- tbl_houses_subset[,1:17]
 
