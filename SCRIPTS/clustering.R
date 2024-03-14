@@ -78,7 +78,7 @@ grups <- cutree(
 #plot(FactoMineR::catdes(tbl_houses_subset, num.var = 19))
 
 
-### Dendograma numèric -------------------------------------------------------
+## Dendograma numèric -------------------------------------------------------
 
 # es fa servir la distància euclidiana ja que estem treballant amb només 
 # variables numèriques. 
@@ -99,6 +99,50 @@ grups <- cutree(
    tree = h2,
    k = 3 #posem aquest com un altre k, ja ho decidirem
 )
+
+
+## K-means -------------------------------------------------------------------
+# modified by: Clara Tarragó, @claratg15
+# modified on: 14-03-2024
+# modified by: Judit Costa, @juditcosta
+# modified on: 14-03-2024
+
+numeriques <- tbl_houses_subset[ , c(5,6,7,12,13,18)]
+
+k <- 6      # nombre òptim de clústers
+clust_kmeans <- kmeans(numeriques, centers = k)
+
+names(numeriques)
+print(clust_kmeans)
+attributes(clust_kmeans)
+
+# Nombre d'observacions a cada grup
+clust_kmeans$size
+
+# Variabilitat de cada grup
+clust_kmeans$withinss
+
+# Centroides de cada grup de totes les variables
+clust_kmeans$centers
+
+# Descomposició de l'inèrcia
+Bss <- sum(rowSums(clust_kmeans$centers^2)*clust_kmeans$size)
+Bss
+Wss <- sum(clust_kmeans$withinss)
+Wss
+Tss <- clust_kmeans$totss
+Tss
+
+Bss+Wss
+
+Ib1 <- 100*Bss/(Bss+Wss)
+Ib1
+
+CalinskiHarabaz<-Bss/Wss
+
+# Afegim una variable que indiqui a quin clúster pertany cada observació
+# tbl_houses_subset[,19] <- clust_kmeans$cluster
+
 
 
 
