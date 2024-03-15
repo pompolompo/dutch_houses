@@ -17,8 +17,8 @@ library(cluster)
 
 # Global options ----------------------------------------------------------
 wd <- "/home/ferran/Documents/Universitat/MULTI/dutch_houses/"
-dat <- "subset_houses.RData"
-k <- 2:10 # nombre de clústers
+dat <- "subset_houses_IMP.RData"
+c <- 2:10 # nombre de clústers
 
 # Source ------------------------------------------------------------------
 
@@ -61,7 +61,7 @@ plot(h,hang=-1,cex=0.6,labels=FALSE) # dendograma
 # també es poden determinar els grups a partir d'una distància per on tallar
 grups <- cutree(
   tree = h,
-  k = k
+  k = c
 )
 
 
@@ -97,7 +97,7 @@ plot(h2,hang=-1,cex=0.6,labels=FALSE)
 
 grups <- cutree(
    tree = h2,
-   k = 3 #posem aquest com un altre k, ja ho decidirem
+   k = 3 # posem aquest com un altre k, ja ho decidirem
 )
 
 
@@ -143,10 +143,29 @@ CalinskiHarabaz<-Bss/Wss
 # Afegim una variable que indiqui a quin clúster pertany cada observació
 # tbl_houses_subset[,19] <- clust_kmeans$cluster
 
+# Mètodes de Validació ----------------------------------------------------
 
+## Elbow Method (numèriques) -----------------------------------------------
+# modified by: Ferran garcia, @pompolompo
+# modified on: 15-03-2024
+# purpose: trobara el nombre de clústers òptim pel clústering de K-means
+# desc: 1. es fa el clústering per difernts nombresx de grups, 
+#       2. es calcula una mètrica de validació per cada ajust i.e:
+#           - % variància explicada
+#           - inèrcia = SSE_entreclust/SSE_dinsclust
+#       3. s'escull el nombre de clústers on canvii bruscament la mètrica
 
+fit_kmeans <- sapply(
+  X = c,
+  FUN = stats::kmeans,
+  x = numeriques
+)
 
+inertia <- unlist(fit_kmeans["betweenss", ])/unlist(fit_kmeans["tot.withinss", ])
 
+plot(x = c, y = inertia, type = "b", 
+     main = "Elbow method", xlab = "Nombre de Clústers",
+     sub = "Sembla que el 6 és el nombre òptim de clústers")
 
 # PREPROFILING
 
