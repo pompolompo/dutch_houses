@@ -7,7 +7,7 @@
 #                2. dendogrames numèrics (diferents nombres de clústers)
 #                3. k-means
 #              validació dels mètodes:
-#                a. índex KH (numèriques) 
+#                a. índex CH (numèriques) 
 #                b. colze ()
 #                c. scatterplot (numeriques)
 
@@ -39,53 +39,50 @@ load(file = paste0(wd, "DATA/", dat))
 # gower no és distància (per això l'elevem al quadrat)
 # gower és una mesura de dissimilitud (per això fem 1 - gower^2) --> no feu cas
 
-categoriques <- c(1:4,8:11,14,16,17)
-tbl_houses_subset[categoriques] <- lapply(tbl_houses_subset[categoriques], as.factor)
+numeriques <- sapply(
+  X = tbl_houses_subset,
+  FUN = is.numeric
+) |> which()
+
 distances <- list(
-  gower = daisy(tbl_houses_subset, metric = "gower", stand = TRUE)**2
+  gower = daisy(tbl_houses_subset, metric = "gower", stand = TRUE)**2,
+  euclid = dist(tbl_houses_subset[, numeriques])
 )
 
-### Agrupacions i dendograma ------------------------------------------------
+## Dendograma mixt ---------------------------------------------------------
 # utilitzem ward com a definició de 'vecindad', amb altres mètodes podem
-#obtenir diferents resultats
+# obtenir diferents resultats
 # 'vecindad' és la semblança d'una observació amb la resta del seu grup
-h <- hclust(
+jerarq_mixt <- hclust(
   d = distances[["gower"]],
   method = "ward.D2"
 )
 
-plot(h,hang=-1,cex=0.6,labels=FALSE) # dendograma
-#hang permet disminuir la granddària del text
+plot(jerarq_mixt, hang = -1, cex = 0.6, labels = FALSE) # dendograma
+# hang permet disminuir la grandària del text
 
 # agrupacions per diferent quantitat de grups (k)
 # també es poden determinar els grups a partir d'una distància per on tallar
-grups <- cutree(
-  tree = h,
+grups_jerarq_mixt <- cutree(
+  tree = jerarq_mixt,
   k = c
 )
 
 ## Dendograma numèric -------------------------------------------------------
-
 # es fa servir la distància euclidiana ja que estem treballant amb només 
-# variables numèriques. 
+# variables numèriques
 
-numeriques <- c(5:7,12:13,18)
-names(tbl_houses_subset[numeriques]) #comprovem que estiguin bé les numèriques
+jerarq_num <- hclust(
+  d = distances[["euclid"]], 
+  method = "ward.D2"
+  )  
 
-data_numeriques<-data.frame(tbl_houses_subset[,numeriques])
-dist_euclidiana  <- dist(data_numeriques[,1:6])
+plot(jerarq_num, hang = -1, cex = 0.6, labels = FALSE)
 
-h2 <- hclust(dist_euclidiana,method="ward.D2")  
-
-str(h2)
-
-plot(h2,hang=-1,cex=0.6,labels=FALSE)
-
-grups <- cutree(
-   tree = h2,
-   k = 3 # posem aquest com un altre k, ja ho decidirem
+grups_jerarq_num <- cutree(
+   tree = jerarq_num,
+   k = c
 )
-
 
 ## K-means -------------------------------------------------------------------
 # modified by: Clara Tarragó, @claratg15
