@@ -99,7 +99,9 @@ resum_kmeans <- sapply(
   FUN = function(fit){
     r <- c(
       'wSS/bSS' = fit[["tot.withinss"]]/fit[["betweenss"]],
-      'calinski' = fit[["betweenss"]]/fit[["tot.withinss"]],
+      'calinski' = 
+        (fit[["betweenss"]]/(length(max(fit[["cluster"]]) - 1)))/
+        (fit[["tot.withinss"]]/(length(fit[["cluster"]]) - max(fit[["cluster"]]))),
       'inertia*' = fit[["tot.withinss"]]/10e10,
       'betweenSS*' = fit[["betweenss"]]/10e10
     )
@@ -114,7 +116,8 @@ size_kmeans <- sapply(
   X = clust_kmeans,
   FUN = function(fit){
     mida <- fit[["size"]]
-    r <- c(min(mida), max(mida), mida, rep(0, 10 - length(mida)))
+    r <- c(min(mida), max(mida), mida, 
+           rep(0, length(clust_kmeans) + 1 - length(mida)))
     return(r)
   }
 ) |> t()
@@ -142,7 +145,7 @@ centre_kmeans <- lapply(
 # desc: 1. es fa el clústering per difernts nombresx de grups, 
 #       2. es calcula una mètrica de validació per cada ajust i.e:
 #           - % variància explicada
-#           - inèrcia = SSE_entreclust/SSE_dinsclust
+#           - calinski = SSE_entreclust/SSE_dinsclust
 #       3. s'escull el nombre de clústers on canvii bruscament la mètrica
 
 fit_kmeans <- sapply(
