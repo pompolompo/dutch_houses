@@ -29,10 +29,7 @@ load(file = paste0(wd, "DATA/", dat))
 
 # Clustering --------------------------------------------------------------
 
-
-## Dendograma mixt ---------------------------------------------------------
-
-### Distància ---------------------------------------------------------------
+## Distància ---------------------------------------------------------------
 # per variables mixtes només podem utilitzar la distància 'gower'
 # l'argument stand = TRUE estandaritza les variables abans de calcular les distàncies: 
 # així la magnitud de les variables no influeix en la seva importància en la distància
@@ -85,46 +82,56 @@ grups_jerarq_num <- cutree(
 )
 
 ## K-means -------------------------------------------------------------------
-# modified by: Clara Tarragó, @claratg15
-# modified on: 14-03-2024
-# modified by: Judit Costa, @juditcosta
-# modified on: 14-03-2024
+# modified by: Ferran Garcia, @pompolompo
+# modified on: 28-03-2024
 
-numeriques <- tbl_houses_subset[ , c(5,6,7,12,13,18)]
+# aplico kmeans per tots els valors de k --> c
+clust_kmeans <- lapply(
+  X = c,
+  FUN = kmeans,
+  x = tbl_houses_subset[, numeriques]
+) |> setNames(paste0("nclust", c))
 
-k <- 6      # nombre òptim de clústers
-clust_kmeans <- kmeans(numeriques, centers = k)
+# creo una taula amb les magnituds importants
+# divideixo entre 10e10 els que no són ratio per millorar visibliitat
+resum_kmeans <- sapply(
+  X = clust_kmeans,
+  FUN = function(fit){
+    r <- c(
+      'wSS/bSS' = fit[["tot.withinss"]]/fit[["betweenss"]],
+      'calinski' = fit[["betweenss"]]/fit[["tot.withinss"]],
+      'inertia*' = fit[["tot.withinss"]]/10e10,
+      'betweenSS*' = fit[["betweenss"]]/10e10
+    )
+    return(r)
+  }
+) |> t()
+round(resum_kmeans, digits = 3)
 
-names(numeriques)
-print(clust_kmeans)
-attributes(clust_kmeans)
+# creo una taula amb la mida de cada clúster (columna)
+# per cada valor de l'hiperparàmetre k (files)
+size_kmeans <- sapply(
+  X = clust_kmeans,
+  FUN = function(fit){
+    mida <- fit[["size"]]
+    r <- c(min(mida), max(mida), mida, rep(0, 10 - length(mida)))
+    return(r)
+  }
+) |> t()
 
-# Nombre d'observacions a cada grup
-clust_kmeans$size
+colnames(size_kmeans) <- c("min", "max", paste0("clust", 1:max(c)))
+size_kmeans
 
-# Variabilitat de cada grup
-clust_kmeans$withinss
-
-# Centroides de cada grup de totes les variables
-clust_kmeans$centers
-
-# Descomposició de l'inèrcia
-Bss <- sum(rowSums(clust_kmeans$centers^2)*clust_kmeans$size)
-Bss
-Wss <- sum(clust_kmeans$withinss)
-Wss
-Tss <- clust_kmeans$totss
-Tss
-
-Bss+Wss
-
-Ib1 <- 100*Bss/(Bss+Wss)
-Ib1
-
-CalinskiHarabaz<-Bss/Wss
-
-# Afegim una variable que indiqui a quin clúster pertany cada observació
-# tbl_houses_subset[,19] <- clust_kmeans$cluster
+# creo una llista amb els centroides de cada clústering
+# cada element de la llista és una matriu que correspona aun valor de k on:
+# les files de cada matriu corresponen als centroides dels grups 
+centre_kmeans <- lapply(
+  X = clust_kmeans,
+  FUN = function(fit){
+    centre <- fit[["centers"]]
+    return(centre)
+  }
+)
 
 # Mètodes de Validació ----------------------------------------------------
 
