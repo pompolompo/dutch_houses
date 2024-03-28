@@ -8,7 +8,7 @@
 #                3. k-means
 #              validació dels mètodes:
 #                a. índex CH (numèriques) 
-#                b. colze ()
+#                b. colze (numèriques)
 #                c. scatterplot (numeriques)
 
 
@@ -21,7 +21,7 @@ dat <- "subset_houses_IMP.RData"
 c <- 2:10 # nombre de clústers
 
 # Source ------------------------------------------------------------------
-
+source(paste0(wd, "FUNCS/", "Scatter_clust_function.R"))
 
 # Imports -----------------------------------------------------------------
 load(file = paste0(wd, "DATA/", dat))
@@ -148,14 +148,59 @@ centre_kmeans <- lapply(
 #           - calinski = SSE_entreclust/SSE_dinsclust
 #       3. s'escull el nombre de clústers on canvii bruscament la mètrica
 
-fit_kmeans <- sapply(
-  X = c,
-  FUN = stats::kmeans,
-  x = numeriques
+plot(x = c, y = resum_kmeans[, "inertia*"], type = "b", lwd = 3,
+     main = "Elbow method: Inèrcia", xlab = "Nombre de Clústers", ylab = "",
+     sub = "Sembla que el 5 o 6 és el nombre òptim de clústers")
+
+plot(x = c, y = resum_kmeans[, "calinski"], type = "b", lwd = 3,
+     main = "Elbow method: Calinski", xlab = "Nombre de Clústers", ylab = "",
+     sub = "Sembla que el 5 o 6 és el nombre òptim de clústers")
+
+plot(x = c, y = resum_kmeans[, "calinski"]/sum(resum_kmeans[, "calinski"]), 
+     type = "b", col = "lightblue", xlab = "Nombre de Clústers", ylab = "", lwd = 3,
+     main = "Elbow method: Inèrcia (salmó) i Calinski (blau); normalitzats entre 0 i 1")
+lines(x = c, y = resum_kmeans[, "inertia*"]/sum(resum_kmeans[, "inertia*"]),
+      type = "b", col = "salmon", lwd = 3)
+
+
+## Calinski ----------------------------------------------------------------
+# el mètode de calinski prèn el nombre de clústers qua maximitza l'índex
+# problema: l'índex creix conforme k augmenta, aparentment de forma indefinida
+# he provat de fer-ho amb c <- 2:1000 i no està clar si seguirà creixent o no
+which.max(resum_kmeans[, "calinski"]) |> names()
+
+## Scatterplot -------------------------------------------------------------
+# comprovem intuitivament si els clústers tenen sentit
+# graficant dues variables numèriques i els seus corresponents clústers
+
+v <- length(numeriques)
+cat("Hi ha", factorial(v)/(factorial(v-2)*factorial(2)), 
+    "potencials combinacions de variables numèriques:")
+
+# quines variables utilitzem?
+v1 <- names(numeriques)[4]
+v2 <- names(numeriques)[5]
+
+# quin clústering utilitzem?
+k <- 6
+
+# utilitzant funció Scatter_clust definida al directori FUNCS
+# gràfic --> kmeans(6)
+Scatter_clust(
+  var1 = v1,
+  var2 = v2,
+  clust = clust_kmeans[[k-1]][["cluster"]],
+  centre = centre_kmeans[[k-1]][, c(v1, v2)],
+  pal = palette.colors(n = k, palette = "Tableau")
 )
 
-inertia <- unlist(fit_kmeans["betweenss", ])/unlist(fit_kmeans["tot.withinss", ])
+# gràfic --> jeràrquic_numèric(6)
+Scatter_clust(
+  var1 = v1,
+  var2 = v2,
+  clust = grups_jerarq_num[, k-1],
+  pal = palette.colors(n = k, palette = "Tableau")
+)
 
-plot(x = c, y = inertia, type = "b", 
-     main = "Elbow method", xlab = "Nombre de Clústers",
-     sub = "Sembla que el 6 és el nombre òptim de clústers")
+# falta provar amb altres variables i altre nombre de grups
+# algunes variables van bé fer agrupar (les escollides) i altres no
