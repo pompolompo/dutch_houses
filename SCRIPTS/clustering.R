@@ -157,10 +157,10 @@ plot(x = c, y = resum_kmeans[, "calinski"], type = "b", lwd = 3,
      sub = "Sembla que el 5 o 6 és el nombre òptim de clústers")
 
 plot(x = c, y = resum_kmeans[, "calinski"]/sum(resum_kmeans[, "calinski"]), 
-     type = "b", col = "lightblue", xlab = "Nombre de Clústers", ylab = "", lwd = 3,
+     type = "l", col = "lightblue", xlab = "Nombre de Clústers", ylab = "", lwd = 3,
      main = "Elbow method: Inèrcia (salmó) i Calinski (blau); normalitzats entre 0 i 1")
 lines(x = c, y = resum_kmeans[, "inertia*"]/sum(resum_kmeans[, "inertia*"]),
-      type = "b", col = "salmon", lwd = 3)
+      type = "l", col = "salmon", lwd = 3)
 
 
 ## Calinski ----------------------------------------------------------------
@@ -178,7 +178,7 @@ cat("Hi ha", factorial(v)/(factorial(v-2)*factorial(2)),
     "potencials combinacions de variables numèriques:")
 
 # quines variables utilitzem?
-v1 <- names(numeriques)[4]
+v1 <- names(numeriques)[1]
 v2 <- names(numeriques)[5]
 
 # quin clústering utilitzem?
@@ -204,3 +204,22 @@ Scatter_clust(
 
 # falta provar amb altres variables i altre nombre de grups
 # algunes variables van bé fer agrupar (les escollides) i altres no
+
+# AQUESTS LOOFS FAN TOTS ELS SCATTER (de forma cutrilla)
+# for(i in 1:6){
+#   for(j in (i+1):6){
+#     v1 <- names(numeriques)[i]
+#     v2 <- names(numeriques)[j]
+#     
+#     Scatter_clust(
+#       var1 = v1,
+#       var2 = v2,
+#       clust = clust_kmeans[[k-1]][["cluster"]],
+#       centre = centre_kmeans[[k-1]][, c(v1, v2)],
+#       pal = palette.colors(n = k, palette = "Tableau")
+#     )
+#     
+#     cat("Variables:", v1, "i", v2, "\n")
+#     Sys.sleep(3)
+#   }
+# }
