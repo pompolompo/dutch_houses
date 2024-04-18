@@ -1,0 +1,17 @@
+#Afegim el nombre de cluster a la base de dades:
+tbl_houses_subset<-tbl_houses_subset[,c(1:14,16:17)]
+numeriques <- tbl_houses_subset[ , c(5,6,7,12,13,16)]
+categoriques<-tbl_houses_subset[,c(1,2,3,4,8,9,10,11,14,15)]
+
+k <- 6  # nombre òptim de clústers
+set.seed(12345)
+clust_kmeans <- kmeans(numeriques, centers = k)
+tbl_houses_subset$cluster_group <- clust_kmeans$cluster #afegim la variable grup a la base de dades
+tbl_houses_subset$cluster_group <- as.factor(tbl_houses_subset$cluster_group)
+
+
+#Afegim la nova variable resposta categoritzada:
+punts_tall <- c(0, 2, 60, 433)
+tbl_houses_subset$temps_mercat <- cut(tbl_houses_subset$time_on_market, breaks = puntos_corte, labels = c("0-2 dies", "3-60 dies", "61-433 dies"), include.lowest = TRUE)
+categorias
+
