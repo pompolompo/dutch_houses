@@ -223,3 +223,11 @@ Scatter_clust(
 #     Sys.sleep(3)
 #   }
 # }
+
+
+## Creació d'una variable que indiqui el clúster al que pertany cda observació ------------
+k <- 6  # nombre òptim de clústers
+set.seed(12345)
+clust_kmeans <- kmeans(numeriques, centers = k)
+tbl_houses_subset$cluster_group <- clust_kmeans$cluster #afegim la variable grup a la base de dades
+tbl_houses_subset$cluster_group <- as.factor(tbl_houses_subset$cluster_group)
