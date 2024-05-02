@@ -37,7 +37,8 @@ barplot(pinerEix)
 
 #CALCULEM LA ACUMULACIÓ D'INÈRCIA:
 #Cummulated Inertia in subspaces, from first principal component to the 11th dimension subspace
-barplot(100*cumsum(pc1$sdev[1:dim(dcon)[2]]^2)/dim(dcon)[2])
+barplot(100*cumsum(pc1$sdev[1:dim(dcon)[2]]^2)/dim(dcon)[2],main = "Percentatge acumulat de la inèrcia",
+        ylab = "inèrcia acumulada",names.arg = c("dim1","dim2","dim3","dim4","dim5"))
 abline(h=80,col="red")
 percInerAccum<-100*cumsum(pc1$sdev[1:dim(dcon)[2]]^2)/dim(dcon)[2]
 percInerAccum
