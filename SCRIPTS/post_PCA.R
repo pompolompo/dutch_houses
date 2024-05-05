@@ -6,10 +6,17 @@
 # desc: jerarquic clustering & profiling 
 # to do:
 #  - fer profiling
+#      + interpretar estadístics resum
+#      + acabar gràfics --> mosaicplots i scatterplots
+#      + interpretar gràfics
+#      + posar nom als clústers
+#  - repetir-ho amb les dimensions significatives enlloc de les variables originals
+
 
 # Libraries ---------------------------------------------------------------
 library(cluster)
 library(dendextend)
+library(dplyr)
 
 # Global options ----------------------------------------------------------
 wd <- "/home/ferran/Documents/Universitat/MULTI/dutch_houses/"
@@ -34,7 +41,7 @@ dim_significa0 <- 3 # dimensions finals
 x_pca0 <- lis_pca0[["x"]][, 1:dim_significa0]
 
 
-## Interpretació dimensions PCA0 ------------------------------------------
+### Interpretació dimensions PCA0 -----------------------------------------
 i <- 1
 j <- 2
 
@@ -94,3 +101,62 @@ grups_jerarq0 <- cutree(
   tree = jerarq0,
   k = 6
 )
+
+tbl_houses_subset[["grup"]] <- as.factor(grups_jerarq0)
+
+## Profiling 0  -----------------------------------------------------------
+
+### Estadístics resum 0 ----------------------------------------------------
+resum0 <- group_by(tbl_houses_subset, grup) |> 
+  summarise(
+    across(
+      where(is.numeric),
+      mean,
+      .names = "{.col}"
+      )
+    )
+
+resum0 <-t(resum0)[-1,]
+colnames(resum0) <- paste("Grup", 1:6)
+resum0 <- matrix(as.numeric(resum0), ncol = 6, byrow = FALSE,
+                 dimnames = dimnames(resum0))
+
+# ordre i xifres que faciliten l'interpretació
+resum0[c("price_metre", "sale_price"), ] <- resum0["sale_price", ]/1000
+resum0 <- cbind(resum0, "Mitjana" = rowMeans(resum0)) |> round(3) 
+resum0 <- resum0[ 
+  c(
+    "sale_price", "price_metre", "rooms", "floor_area", "parcel_size",
+    "time_on_market",
+    "interior_condition", "exterior_condition", "construction_period",
+    "energy_label"
+  ),
+]
+
+
+### Gràfics 0 -------------------------------------------------------------
+# boxplots --> numèriques
+with(tbl_houses_subset, boxplot(sale_price ~ grup))
+with(tbl_houses_subset, boxplot(price_metre ~ grup))
+with(tbl_houses_subset, boxplot(time_on_market ~ grup))
+with(tbl_houses_subset, boxplot(rooms ~ grup))
+with(tbl_houses_subset, boxplot(time_on_market ~ grup))
+
+# barplots --> prova chi2 --> H_0: clust indep. energy_lab vs H_1: dependents --> problema
+## eficiència energètica
+auxN <- with(tbl_houses_subset, table(grup, energy_label))
+colnames(auxN) <- LETTERS[7:1]
+chisq.test(auxN) # dependents
+# diferència difícil de caracteritzar
+mosaicplot(auxN, col = RColorBrewer::brewer.pal(7, "BrBG"), xlab = "", ylab = "",
+           main = "Clúster contra energy_label", cex.axis = 1.25, las = 1)
+
+## construction_period
+auxN <- with(tbl_houses_subset, table(grup, construction_period))
+chisq.test(auxN) # dependents
+# diferència difícil de caracteritzar
+mosaicplot(auxN, col = RColorBrewer::brewer.pal(10, "BrBG"), xlab = "", ylab = "",
+           main = "Clúster contra construction_period", cex.axis = 1.25, las = 1,
+           sub = "1 és el més vell i 10 és el més nou")
+
+
