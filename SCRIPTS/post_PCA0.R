@@ -127,9 +127,7 @@ resum0 <- cbind(resum0, "Mitjana" = rowMeans(resum0)) |> round(3)
 resum0 <- resum0[ 
   c(
     "sale_price", "price_metre", "rooms", "floor_area", "parcel_size",
-    "time_on_market",
-    "interior_condition", "exterior_condition", "construction_period",
-    "energy_label"
+    "time_on_market"
   ),
 ]
 
@@ -138,7 +136,10 @@ resum0 <- resum0[
 # boxplots --> numèriques
 with(tbl_houses_subset, boxplot(sale_price ~ grup))
 with(tbl_houses_subset, boxplot(price_metre ~ grup))
-with(tbl_houses_subset, boxplot(time_on_market ~ grup))
+tbl_houses_subset[tbl_houses_subset[["floor_area"]] < 4000, ] |> 
+  with(boxplot(floor_area ~ grup))
+tbl_houses_subset[tbl_houses_subset[["parcel_size"]] < 2000, ] |> 
+  with(boxplot(parcel_size ~ grup))
 with(tbl_houses_subset, boxplot(rooms ~ grup))
 with(tbl_houses_subset, boxplot(time_on_market ~ grup))
 
@@ -152,11 +153,11 @@ mosaicplot(auxN, col = RColorBrewer::brewer.pal(7, "BrBG"), xlab = "", ylab = ""
            main = "Clúster contra energy_label", cex.axis = 1.25, las = 1)
 
 ## construction_period
-auxN <- with(tbl_houses_subset, table(grup, construction_period))
+auxN <- with(tbl_houses_subset, table(grup, construction_period))[, -1]
 chisq.test(auxN) # dependents
 # diferència difícil de caracteritzar
 mosaicplot(auxN, col = RColorBrewer::brewer.pal(10, "BrBG"), xlab = "", ylab = "",
            main = "Clúster contra construction_period", cex.axis = 1.25, las = 1,
-           sub = "1 és el més vell i 10 és el més nou")
+           sub = "1 és el més vell i 9 és el més nou")
 
 
