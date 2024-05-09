@@ -19,14 +19,15 @@ load(file = paste0(wd, "DATA/", dat))
 
 # Scatter_clust function --------------------------------------------------
 
-Scatter_clust <- function(var1,  #variable eix X
-                          var2,  # variable eix Y
-                          pal,   # paleta de colors
-                          clust, # clústers de les observacions
-                          centre = NULL # centroides de cada clúster
-                                        # si null no es dibuixen
+Scatter_clust <- function(
+    dades,        # dataframe amb les dades
+    var1,         # variable eix X
+    var2,         # variable eix Y
+    pal,          # paleta de colors
+    clust,        # clústers de les observacions
+    centre = NULL # centroides de cada clúster (si null no es dibuixen)
                           ){
-  plot(tbl_houses_subset[[var1]], tbl_houses_subset[[var2]], 
+  plot(dades[[var1]], dades[[var2]], 
        col = pal[clust], xlab = var1, ylab = var2, cex = .75,
        main = paste("Scatterplot de", var1, "i", var2))
   

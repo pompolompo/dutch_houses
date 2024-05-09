@@ -27,6 +27,10 @@ dim_significa <- 3 # utilitzo les dimensions del script PCA.R
 load(file = paste0(wd, "DATA/", dat))
 
 
+# Sources -----------------------------------------------------------------
+source(paste0(wd, "FUNCS/", "Scatter_clust_function.R"))
+
+
 # Sense afegir variables --------------------------------------------------
 
 
@@ -127,9 +131,7 @@ resum0 <- cbind(resum0, "Mitjana" = rowMeans(resum0)) |> round(3)
 resum0 <- resum0[ 
   c(
     "sale_price", "price_metre", "rooms", "floor_area", "parcel_size",
-    "time_on_market",
-    "interior_condition", "exterior_condition", "construction_period",
-    "energy_label"
+    "time_on_market"
   ),
 ]
 
@@ -138,11 +140,20 @@ resum0 <- resum0[
 # boxplots --> numèriques
 with(tbl_houses_subset, boxplot(sale_price ~ grup))
 with(tbl_houses_subset, boxplot(price_metre ~ grup))
-with(tbl_houses_subset, boxplot(time_on_market ~ grup))
+tbl_houses_subset[tbl_houses_subset[["floor_area"]] < 4000, ] |> 
+  with(boxplot(floor_area ~ grup))
+tbl_houses_subset[tbl_houses_subset[["parcel_size"]] < 2000, ] |> 
+  with(boxplot(parcel_size ~ grup))
 with(tbl_houses_subset, boxplot(rooms ~ grup))
 with(tbl_houses_subset, boxplot(time_on_market ~ grup))
 
-# barplots --> prova chi2 --> H_0: clust indep. energy_lab vs H_1: dependents --> problema
+# scatterplots --> numèriques
+pal <- palette.colors(n = 6, palette = "Tableau")
+plot(x_pca0[, c("PC1", "PC2")], col = pal[grups_jerarq0])
+plot(x_pca0[, c("PC1", "PC3")], col = pal[grups_jerarq0])
+plot(x_pca0[, c("PC2", "PC3")], col = pal[grups_jerarq0])
+
+# mosaicplots --> prova chi2 --> H_0: clust indep. energy_lab vs H_1: dependents --> problema
 ## eficiència energètica
 auxN <- with(tbl_houses_subset, table(grup, energy_label))
 colnames(auxN) <- LETTERS[7:1]
@@ -152,11 +163,11 @@ mosaicplot(auxN, col = RColorBrewer::brewer.pal(7, "BrBG"), xlab = "", ylab = ""
            main = "Clúster contra energy_label", cex.axis = 1.25, las = 1)
 
 ## construction_period
-auxN <- with(tbl_houses_subset, table(grup, construction_period))
+auxN <- with(tbl_houses_subset, table(grup, construction_period))[, -1]
 chisq.test(auxN) # dependents
 # diferència difícil de caracteritzar
 mosaicplot(auxN, col = RColorBrewer::brewer.pal(10, "BrBG"), xlab = "", ylab = "",
            main = "Clúster contra construction_period", cex.axis = 1.25, las = 1,
-           sub = "1 és el més vell i 10 és el més nou")
+           sub = "1 és el més vell i 9 és el més nou")
 
 
