@@ -60,32 +60,17 @@ ggarrange(p1, p2, p3, p4,p5, ncol = 3, nrow = 2, common.legend = TRUE, legend = 
 # ------------------------------------------------------------------------------
 # També ho podem veure visualitzant les gràfiques de punts per veure distàncies als
 # centroides
-pairs(x = train[, -5], col = c("firebrick", "green3", "darkblue")[train[, variable_resposta]], pch = 20)
 
-## Como se observa en dichos gráficos, las variables clasificadoras pueden contribuir 
-## a la discriminación entre las tres especies de flores iris.
-## Para aplicar la función lda() se debe especificar la variable de clasificación 
-## (Species) y el conjunto de datos (entrenamiento_t); de forma opcional, se 
-## pueden especificar las probabilidades a priori (prior, por defecto se usa 
-## proportions), el método de estimación de las medias y varianzas (method, 
-## por defecto moment) o el argumento CV para obtener los grupos pronosticados 
-## y las probabilidades a posteriori (por defecto, CV=FALSE).
+pairs(x = train[, -5], col = c("firebrick", "green3", "darkblue")[train[, variable_resposta]], pch = 20)
+#com que tenim moltes variables aquest gràfic no s'acaa de veure bé
+
 
 options(digits = 4)
 modelo_lda <- lda(cluster_group ~ ., data = train)
 modelo_lda
 
-## La salida muestra las probabilidades previas (Prior probabilities of groups) 
-## y los centroides de cada grupo (Group means). A continuación muestra las 
-## funciones discriminantes de Fisher mediante los respectivos coeficientes w_jt
-## En este caso, las dos funciones discriminantes son:
-## D_1 = 0.6497·SL + 0.7416·SW - 3.9531·PL - 2.0670·PW
-## D_2 = -0.1239·SL - 0.8131·SW + 2.0349·PL - 2.4184·PW
-## con una proporción de discriminación de 0,9927 y 0,0073, respectivamente.
 
-## La proyección de los individuos (en este caso flores) en el plano formado por 
-## las dos funciones discriminantes:
-
+## fem la projecció dels individus en el pla format per dos funcions discriminants (fem un gràfic per a cada parella)
 datos_lda <- cbind(train, predict(modelo_lda)$x)
 
 #GRÀFIC LD1 I LD2
@@ -149,20 +134,14 @@ ggplot(datos_lda, aes(LD4, LD5)) +
   ggtitle("Gráfico LDA")
 
 
-
-
-## Como se aprecia, la primera función discriminante es la que mayor contribución 
-## tiene a la separación entre los grupos, separando muy claramente a la especie 
-## setosa y, en menor medida, a las especies virginica y versicolor, grupos entre 
-## los que hay un pequeño grado de solapamiento. Por otro lado, la segunda función 
-## discriminante, con una proporción de discriminación de 0,0073, apenas contribuye a 
-## la separación entre grupos.
-
 ## Por último, mediante la función partimat() del paquete klaR, se puede visualizar 
 ## cómo quedan las regiones bivariantes que clasifican los individuos en cada clase 
 
 klaR::partimat(cluster_group ~ ., data = train, method = "lda", 
                image.colors = c("skyblue", "lightgrey", "yellow","pink","orange","green"), col.mean = "red")
+
+##aquest gràfic dona error perque tenim moltes variables
+
 
 ## Por último, aplicando las funciones discriminantes a los datos reservados para 
 ## estudiar la capacidad predictiva del modelo, se obtiene la tabla conocida como 
@@ -170,30 +149,33 @@ klaR::partimat(cluster_group ~ ., data = train, method = "lda",
 ## modelo:
 
 predicciones_lda <- modelo_lda |> predict(test)
-table(test$Species, predicciones_lda$class, dnn = c("Grupo real", "Grupo pronosticado"))
-mean(predicciones_lda$class == test$Species)
+table(test$cluster_group, predicciones_lda$class, dnn = c("Grupo real", "Grupo pronosticado"))
+mean(predicciones_lda$class == test$cluster_group)
 
 
 # ==============================================================================
 # ANALISIS DISCRIMINANT CUADRÀTIC
-## Para ilustrar la realización de un análisis discriminante cuadrático en R, se 
-## aplica la función qda() a los datos iris utilizados en el caso lineal. 
-## La elección de la misma base de datos responde a un planteamiento didáctico, 
-## para poder comparar los resultados de ambos métodos y las diferencias que produce 
-## asumir la igualdad de matrices de varianzas-covarianzas (método lineal) o 
-## no asumirlas (método cuadrático)
+
+######### A PARTIR D'AQUI DONA ERROR #############
 
 options(digits = 4)
-modelo_qda <- qda(Species ~ ., data = train)
+modelo_qda <- qda(cluster_group ~ ., data = train)
+
+#com que el grup 2 és molt petit, l'eliminem del grup de train:
+
+train_2<-train[-(which(train$cluster_group==2)),]
+
+modelo_qda <- qda(cluster_group ~ ., data = train_2)
+
+#segueix sense funcionar, per tant treiem el seguent grup mes petit
+
+train_2<-train_2[-(which(train$cluster_group==1)),]
+
+modelo_qda <- qda(cluster_group ~ ., data = train_2)
 modelo_qda
 
-partimat(Species ~ ., data = train, method = "qda", image.colors = c("skyblue", "lightgrey", "yellow"), col.mean = "red")
+partimat(cluster_group ~ ., data = train_2, method = "qda", image.colors = c("skyblue", "lightgrey", "yellow"), col.mean = "red")
 
-## Como se aprecia, ahora los contornos de las áreas no son siempre lineales, sino 
-## que incluyen fronteras cuadráticas. Por último, aplicando el discriminante 
-## cuadrático a los datos reservados para estudiar la capacidad predictiva del 
-## modelo, se obtiene la matriz de confusión, donde se observa que no se mejoran 
-## los resultados respecto al discriminante lineal.
 
 predicciones_qda <- modelo_qda |> predict(test)
 matriz_confusion <- table(test$Species, predicciones_qda$class, dnn = c("Grupo real", "Grupo pronosticado"))
