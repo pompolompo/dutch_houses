@@ -13,6 +13,12 @@ rm(list.of.packages, new.packages)
 # Dividim les dades: 80% entrenament i 20% test
 
 variable_resposta<-"cluster_group"
+
+##### eliminem les variablea amb variancia 0:
+
+tbl_houses_subset<-tbl_houses_subset[,-28]
+
+
 ## Declarem la semilla
 set.seed(6789)
 
@@ -32,11 +38,12 @@ test <- preproc_param |> predict(test)
 # puguin contribuir a la discriminació dels grups
 
 
-
+#Variables numèriques
 
 p1 <- ggplot(data = train, aes(x = parcel_size, fill = !!sym(variable_resposta), colour =!!sym(variable_resposta))) +
   geom_density(alpha = 0.3) +
   theme_bw()
+
 
 p2 <- ggplot(data = train, aes(x = floor_area, fill = !!sym(variable_resposta), colour =!!sym(variable_resposta))) +
   geom_density(alpha = 0.3) +
@@ -56,14 +63,15 @@ p5 <- ggplot(data = train, aes(x = price_metre, fill = !!sym(variable_resposta),
 
 ggarrange(p1, p2, p3, p4,p5, ncol = 3, nrow = 2, common.legend = TRUE, legend = "bottom")
 
-
 # ------------------------------------------------------------------------------
 # També ho podem veure visualitzant les gràfiques de punts per veure distàncies als
 # centroides
 
-pairs(x = train[, -5], col = c("firebrick", "green3", "darkblue")[train[, variable_resposta]], pch = 20)
-#com que tenim moltes variables aquest gràfic no s'acaa de veure bé
 
+png("plot.png")
+pairs(x = train[, -5], col = c("firebrick", "green3", "darkblue")[train[, variable_resposta]], pch = 20)
+#com que tenim moltes variables aquest gràfic no s'acaba de veure bé
+dev.off()
 
 options(digits = 4)
 modelo_lda <- lda(cluster_group ~ ., data = train)
@@ -137,9 +145,11 @@ ggplot(datos_lda, aes(LD4, LD5)) +
 ## Por último, mediante la función partimat() del paquete klaR, se puede visualizar 
 ## cómo quedan las regiones bivariantes que clasifican los individuos en cada clase 
 
+pdf("plot.pdf", width = 10, height = 8)
 klaR::partimat(cluster_group ~ ., data = train, method = "lda", 
                image.colors = c("skyblue", "lightgrey", "yellow","pink","orange","green"), col.mean = "red")
 
+dev.off()
 ##aquest gràfic dona error perque tenim moltes variables
 
 
