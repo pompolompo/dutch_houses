@@ -149,9 +149,10 @@ with(tbl_houses_subset, boxplot(time_on_market ~ grup))
 
 # scatterplots --> numèriques
 pal <- palette.colors(n = 6, palette = "Tableau")
-plot(x_pca0[, c("PC1", "PC2")], col = pal[grups_jerarq0])
-plot(x_pca0[, c("PC1", "PC3")], col = pal[grups_jerarq0])
-plot(x_pca0[, c("PC2", "PC3")], col = pal[grups_jerarq0])
+tbl_houses_subset$pal <- names(pal)[grups_jerarq0]
+plot(x_pca0[, c("PC1", "PC2")], col = pal[grups_jerarq0],main = "Clústers aplicats a la dimensió 1 i 2")
+plot(x_pca0[, c("PC1", "PC3")], col = pal[grups_jerarq0],main = "Clústers aplicats a la dimensió 1 i 3")
+plot(x_pca0[, c("PC2", "PC3")], col = pal[grups_jerarq0],main = "Clústers aplicats a la dimensió 2 i 3")
 
 # mosaicplots --> prova chi2 --> H_0: clust indep. energy_lab vs H_1: dependents --> problema
 ## eficiència energètica
