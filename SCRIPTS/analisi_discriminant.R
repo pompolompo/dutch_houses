@@ -17,7 +17,8 @@ variable_resposta<-"cluster_group"
 ##### eliminem les variablea amb variancia 0:
 
 tbl_houses_subset<-tbl_houses_subset[,-28]
-
+num<-c(2,3,4,5,7)
+cat<-c(1,6,9:64)
 
 ## Declarem la semilla
 set.seed(6789)
@@ -63,15 +64,28 @@ p5 <- ggplot(data = train, aes(x = price_metre, fill = !!sym(variable_resposta),
 
 ggarrange(p1, p2, p3, p4,p5, ncol = 3, nrow = 2, common.legend = TRUE, legend = "bottom")
 
+
+#variables categoriques
+
+p1 <- ggplot(data = train, aes(x = Amsterdam, fill = !!sym(variable_resposta), colour =!!sym(variable_resposta))) +
+  geom_density(alpha = 0.3) +
+  theme_bw()
+
 # ------------------------------------------------------------------------------
 # També ho podem veure visualitzant les gràfiques de punts per veure distàncies als
 # centroides
 
 
 png("plot.png")
-pairs(x = train[, -5], col = c("firebrick", "green3", "darkblue")[train[, variable_resposta]], pch = 20)
+pairs(x = train[, num], col = c("firebrick", "green3", "darkblue", "pink", "orange", "yellow")[train[, variable_resposta]], pch = 20)
 #com que tenim moltes variables aquest gràfic no s'acaba de veure bé
 dev.off()
+
+city<-c(9:12)
+cons_per<-c(28:36)
+#fem aquest grafic per cada grup de categoriques
+pairs(x = train[, city], col = c("firebrick", "green3", "darkblue", "pink", "orange", "yellow")[train[, variable_resposta]], pch = 20)
+
 
 options(digits = 4)
 modelo_lda <- lda(cluster_group ~ ., data = train)
@@ -145,12 +159,15 @@ ggplot(datos_lda, aes(LD4, LD5)) +
 ## Por último, mediante la función partimat() del paquete klaR, se puede visualizar 
 ## cómo quedan las regiones bivariantes que clasifican los individuos en cada clase 
 
-pdf("plot.pdf", width = 10, height = 8)
-klaR::partimat(cluster_group ~ ., data = train, method = "lda", 
+
+klaR::partimat(train[,"cluster_group"] ~ ., data = train[,num], method = "lda", 
                image.colors = c("skyblue", "lightgrey", "yellow","pink","orange","green"), col.mean = "red")
 
-dev.off()
-##aquest gràfic dona error perque tenim moltes variables
+
+
+klaR::partimat(train[,"cluster_group"] ~ ., data = train[,10:12], method = "lda", 
+               image.colors = c("skyblue", "lightgrey", "yellow","pink","orange","green"), col.mean = "red")
+
 
 
 ## Por último, aplicando las funciones discriminantes a los datos reservados para 
@@ -161,37 +178,5 @@ dev.off()
 predicciones_lda <- modelo_lda |> predict(test)
 table(test$cluster_group, predicciones_lda$class, dnn = c("Grupo real", "Grupo pronosticado"))
 mean(predicciones_lda$class == test$cluster_group)
-
-
-# ==============================================================================
-# ANALISIS DISCRIMINANT CUADRÀTIC
-
-######### A PARTIR D'AQUI DONA ERROR #############
-
-options(digits = 4)
-modelo_qda <- qda(cluster_group ~ ., data = train)
-
-#com que el grup 2 és molt petit, l'eliminem del grup de train:
-
-train_2<-train[-(which(train$cluster_group==2)),]
-
-modelo_qda <- qda(cluster_group ~ ., data = train_2)
-
-#segueix sense funcionar, per tant treiem el seguent grup mes petit
-
-train_2<-train_2[-(which(train$cluster_group==1)),]
-
-modelo_qda <- qda(cluster_group ~ ., data = train_2)
-modelo_qda
-
-partimat(cluster_group ~ ., data = train_2, method = "qda", image.colors = c("skyblue", "lightgrey", "yellow"), col.mean = "red")
-
-
-predicciones_qda <- modelo_qda |> predict(test)
-matriz_confusion <- table(test$Species, predicciones_qda$class, dnn = c("Grupo real", "Grupo pronosticado"))
-matriz_confusion <- reshape2::melt(matriz_confusion)
-matriz_confusion <- caret::confusionMatrix(test$Species, predicciones_qda$class)
-
-
 
 
