@@ -17,6 +17,8 @@ variable_resposta<-"cluster_group"
 ##### eliminem les variablea amb variancia 0:
 
 tbl_houses_subset<-tbl_houses_subset[,-28]
+
+
 num<-c(2,3,4,5,7)
 cat<-c(1,6,9:64)
 
@@ -76,10 +78,9 @@ p1 <- ggplot(data = train, aes(x = Amsterdam, fill = !!sym(variable_resposta), c
 # centroides
 
 
-png("plot.png")
+#png("plot.png")
 pairs(x = train[, num], col = c("firebrick", "green3", "darkblue", "pink", "orange", "yellow")[train[, variable_resposta]], pch = 20)
-#com que tenim moltes variables aquest gràfic no s'acaba de veure bé
-dev.off()
+#dev.off()
 
 city<-c(9:12)
 cons_per<-c(28:36)
