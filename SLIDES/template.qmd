@@ -1,0 +1,424 @@
+---
+title: "Anàlisi del mercat inmobiliari neerlandès"
+title-slide-attributes:
+    data-background-image: /template_files/figure-revealjs/dutch-houses.png
+    data-background-size: contain
+    data-background-opacity: "0.35"
+author: "Grup X"
+format: 
+ revealjs:
+   theme: default
+   logo: /template_files/figure-revealjs/upc.png
+   footer: "Anàlisi Multivariant - Mercat inmobiliari neerlandès"
+   chalkboard: true
+   slide-number: true
+   smaller: false
+editor: visual
+---
+
+# Agenda
+
+Dividim la presentació en tres seccions:
+
+::: columns
+::: {.column width="65%"}
+- Passat: Què vam fer?
+- Present: Què hem fet?
+- Futur: Què cal fer?
+:::
+
+::: {.column width="35%"}
+![](/template_files/figure-revealjs/house1.png){width="150%"}
+:::
+:::
+
+# Què vam fer?
+
+
+## Introducció {.smaller}
+
+::: panel-tabset
+
+### Dades
+
+::: {.incremental}
+- Transaccions de vivendes a Amsterdam, Utrecht, The Hague i Rotterdam
+- Al voltant de 50.000 observacions recollides entre 2014 i 2021
+- La temàtica de les variables descriu:
+  + Preu
+  + Localització
+  + Característiques de la vivenda
+  + Temps al mercat i data de transacció
+:::
+
+::: aside
+Font: [Maastricht University, Nils Kok](https://www.maastrichtuniversity.nl/)
+:::
+
+
+### Pregunta
+
+::: {.incremental}
+- Què caracteritza les transaccions?
+  + Distribucions de les variables
+  + Relacions entre variables
+- Quines variables són més importants?
+  + Per explicar altres variables
+  + Per agrupar les transaccions
+- Com podem agrupar les transaccions?
+:::
+
+### Objectius
+
+::: columns
+
+::: {.column width="45%"}
+
+#### Conceptuals
+
+::: {.incremental}
+- Entendre el comportament de les variables més importants
+- Determinar l'existència de relacions entre variables
+- Caracteritzar agrupacions de transaccions diferents entre si
+:::
+
+:::
+
+::: {.column width="10%"}
+:::
+
+::: {.column width="45%"}
+#### Tècniques
+- Preprocessing
+- Imputació de dades
+- Descriptiva
+- Clústering
+- Validació
+- Profiling
+- Reducció dimensionalitat
+- Anàlisi discriminant
+:::
+:::
+
+:::
+
+## Base de dades {.smaller}
+
+::: panel-tabset
+
+### Variables numèriques
+
+content here
+
+### Variables categòriques
+
+content there
+:::
+
+## Descriptiva {.smaller}
+
+::: panel-tabset
+
+### Variables numèriques
+
+fins a quin punt és necessari?
+
+### Variables categòriques
+
+fins a quin punt és necessari?
+:::
+
+
+## Preprocessing {.smaller}
+
+- Teníem moltes dades, en vam seleccionar 5.000
+- La variable `type` tenia massa nivells, vam *fusionar* nivells similars
+- No hi havia massa missings, els vam crear i els vam imputar utilitzant
+  + MICE
+  + KNN
+
+## Clústering i validació {.smaller}
+
+::: panel-tabset
+
+### Clústering
+
+- Jeràrquic:
+  + Distància de Gower^[Variables numèriques i categòriques]
+  + Mètode de Ward
+
+- No jeràrquic:^[Variables numèriques]
+  + K-means
+  + K-medians
+
+### Validació
+
+- Inèricia
+- Calinski
+- $\sigma_{between}$ / $\sigma_{total}$
+- Elbow method
+- Scatterplot
+- Profiling
+- 6 grups
+
+:::
+
+## Profiling - opció 1 {.smaller}
+
+::: panel-tabset
+
+### Grup 1
+
+Fer un petit profiling de cada grup comentant les característiques que el diferencien de la resta:
+
+- Canviar el nom `Grup 1` pel nom amb el que bategem el grup
+- Taula amb estadístics resum
+- Un parell de gràfics
+
+### Grup 2
+
+### Grup 3
+
+### Grup 4
+
+### Grup 5
+
+### Grup 6
+
+:::
+
+## Profiling - opció 2 {.smaller}
+
+::: panel-tabset
+
+### Característica 1
+
+Per les característiques diferenciades entre grups:
+
+- Comparar els grups i senyalar els extrems
+  
+Després fer una comparació general i batejar els grups amb noms.
+
+### Característica 2
+
+### Característica 3
+
+### Comparació general
+
+:::
+
+# Què hem fet?
+
+## PCA {.smaller}
+
+::: panel-tabset
+### Dimensions significatives
+
+- Variància explicada
+- Regla de Kàiser
+- Elbow method
+
+### Interpretació de les dimensions
+
+- Correlació de les variables originals sobre les dimensions
+
+:::
+
+## Anàlisi discriminant {.smaller}
+
+## Clústering i validació {.smaller}
+
+## Profiling {.smaller}
+
+# Conclusions
+
+# Template
+
+## Resources
+
+-   [Quarto - revealjs](https://quarto.org/docs/presentations/revealjs/)
+-   [Markdown](https://www.markdownguide.org/)
+-   [Presentation](https://quarto.org/docs/presentations/revealjs/presenting.html)
+-   [Quarto - Advanced revealjs](https://quarto.org/docs/presentations/revealjs/advanced.html)
+
+## Diapos i seccions
+
+-   Seccions (# Basics)
+-   Diapos (## Diapos i seccions)
+
+------------------------------------------------------------------------
+
+-   Diapo sense títol (---)
+
+## Incremental vs nonIncremental & Pauses {.Small}
+
+::: incremental
+-   Incremental (amb cada click apareix un nou punt)
+    -   Punt 1
+    -   etc
+:::
+
+::: nonincremental
+-   No incremental (tots els punts apareixen alhora)
+    -   Punt A
+    -   etc
+:::
+
+. . .
+
+-   Per fer una pausa separar-la amb (. . .)
+-   Apareixen tots alhora, però no des del principi
+
+## Estructura: Columnes
+
+::: columns
+::: {.column width="30%"}
+Left column
+:::
+
+::: {.column width="40%"}
+Center column
+:::
+
+::: {.column width="30%"}
+Right column
+:::
+:::
+
+## Massa contingut: Fes-lo petit 
+
+-   Cal afegir  al costat del títol de la diapo
+-   Punt 2
+-   Punt 3
+-   Punt 4
+-   Punt 5
+-   Punt 6
+-   Punt 7
+-   Punt 8
+-   Punt 9
+-   Punt 10
+-   Punt 11
+-   Punt 12
+-   Punt 13
+-   Punt 14
+
+## Massa contingut: Utilitza l'scroll {.scrollable}
+
+-   Cal afegir {.scrollable} al costat del títol de la diapo
+-   Punt 2
+-   Punt 3
+-   Punt 4
+-   Punt 5
+-   Punt 6
+-   Punt 7
+-   Punt 8
+-   Punt 9
+-   Punt 10
+-   Punt 11
+-   Punt 12
+-   Punt 13
+-   Punt 14
+
+## Notes de presentador
+
+Això és el que es veu a la presentació, però si el presentador prem la tecla `s`...
+
+::: notes
+Des de la visió de presntador es veurà això.
+:::
+
+## Notes a peu de pàgina
+
+Una mica de text per aquí[^1]
+
+[^1]: Una nota a peu de pàgina amb referència (.md syntax)
+
+::: aside
+Una nota a peu de pàgina sense referència (aside)
+:::
+
+## Imatges {.nostretch}
+
+Podem afegir imatges controlant la seva mida. Per fer-ho cal:
+
+-   Desctivar l'ajust automàtic {.nostrech} al títol de la diapo.
+-   Declarar l'argument {width="x%"} amb l'imatge.
+
+::: columns
+::: {.column width="50%"}
+![Tux](/template_files/figure-revealjs/tux.png){width="30%"}
+:::
+
+::: {.column width="50%"}
+-   Podem utilitzar les columnes per ubicat l'imatge a una banda i, per exemple, text a l'altre.
+:::
+:::
+
+## Codi {.scrollable}
+
+-   Es poden especificar les opcions del chunk de codi al gust.
+-   També es pot utilitzar codi d'altres llenguatges (i.e python)
+
+. . .
+
+```{r}
+#| echo: true
+#| code-line-numbers: "3"
+#| code-fold: show
+
+x <- iris[,1]
+y <- iris[,2]
+model <- lm(y ~ x)
+```
+
+. . .
+
+```{r}
+#| echo: true
+#| code-line-numbers: "|1|2"
+#| out-width: "100%"
+#| output-location: default
+
+plot(y ~ x)
+abline(coef = model$coefficients)
+```
+
+## Fragments
+
+::: fragment
+Fade in
+:::
+
+::: {.fragment .fade-out}
+Fade out
+:::
+
+::: {.fragment .highlight-red}
+Highlight red
+:::
+
+::: {.fragment .fade-in-then-out}
+Fade in, then out
+:::
+
+::: {.fragment .fade-up}
+Slide up while fading in
+:::
+
+## Tabsets
+
+::: panel-tabset
+### Tab A
+
+Content for `Tab A`
+
+### Tab B
+
+Content for `Tab B`
+:::
+
+## Bash
+
+```{bash}
+tree ~/Documents/Universitat -L 2
+```
