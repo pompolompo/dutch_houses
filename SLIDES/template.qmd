@@ -9,12 +9,28 @@ format:
  revealjs:
    theme: default
    logo: /template_files/figure-revealjs/upc.png
-   footer: "Anàlisi Multivariant - Mercat inmobiliari neerlandès"
+   footer: "[Anàlisi Multivariant - Mercat inmobiliari neerlandès](https://github.com/pompolompo/dutch_houses)"
    chalkboard: true
    slide-number: true
    smaller: false
-editor: visual
+editor: source
+execute: 
+  echo: false
 ---
+
+```{r global_opts}
+wd <- "/home/ferran/Documents/Universitat/MULTI/dutch_houses/"
+```
+
+
+```{r libraries}
+library(RColorBrewer)
+library(ggplot2)
+library(dplyr)
+library(shiny)
+library(bslib)
+```
+
 
 # Agenda
 
@@ -102,42 +118,210 @@ Font: [Maastricht University, Nils Kok](https://www.maastrichtuniversity.nl/)
 
 :::
 
-## Base de dades {.smaller}
+## Base de dades {.smaller .scrollable}
 
 ::: panel-tabset
 
 ### Variables numèriques
 
-content here
+::: columns
+::: {.column width="60%"}
 
-### Variables categòriques
-
-content there
+::: {.incremental}
+- Valor de la transacció, en euros
+- Mida de la parcel·la, en $m^2$
+- Mida de la vivenda, en $m^2$ útils
+- Nombre d'habitacions, en unitats
+- Temps en el mercat, en dies
+- *Preu per metre quadrat*
 :::
 
-## Descriptiva {.smaller}
 
-::: panel-tabset
+:::
 
-### Variables numèriques
+::: {.column width="40%"}
+![](/template_files/figure-revealjs/house3.png)
+:::
 
-fins a quin punt és necessari?
+:::
+
 
 ### Variables categòriques
 
-fins a quin punt és necessari?
+::: columns
+::: {.column width="60%"}
+
+::: {.incremental}
+- Ciutat, factor
+- Codi postal, factor
+- Tipus (pis, casa, granja, ...), factor
+- Apartament, binària
+- Carrer sorollós, binària
+- Període de construcció, factor ordinal
+- Condició interior, factor ordinal
+- Condició exterior, factor ordinal
+- Any, factor ordinal
+- Mes, factor ordinal
+- Eficiència energètica, factor ordinal
+:::
+
+
+:::
+
+::: {.column width="40%"}
+![](/template_files/figure-revealjs/house4.png)
+:::
+
+:::
+
+:::
+
+## Descriptiva {.smaller .scrollable}
+
+```{r import1}
+# import
+paste0(wd, "/DATA/subset_houses_IMP.RData") |> 
+  load()
+
+# canvi escala preu
+tbl_houses_subset$price_metre <- tbl_houses_subset$price_metre / 1000
+tbl_houses_subset$sale_price <- tbl_houses_subset$sale_price / 1000
+```
+
+
+::: panel-tabset
+
+### Univariant
+
+to do
+
+### Bivariant
+
+```{r graf_price_ecolabel}
+# sense observacions extremes
+tbl_houses_subset |> 
+  filter(
+    sale_price < quantile(sale_price, .95)
+  ) |> 
+  ggplot(aes(energy_label, sale_price)) +
+  geom_boxplot(
+    fill = RColorBrewer::brewer.pal(7, "BrBG") |> 
+      rev()
+  ) +
+  labs(
+    title = "Preu per metre quadrat segons l'eficiència energètica",
+    subtitle = "S'exclouen transaccions amb preu per sobre del percentil 95"
+  ) +
+  xlab("Eficiència energètica") +
+  ylab("Preu de venda") +
+  theme_bw()
+
+# totes les observacions
+tbl_houses_subset |> 
+  ggplot(aes(energy_label, sale_price)) +
+  geom_boxplot(
+    fill = RColorBrewer::brewer.pal(7, "BrBG") |> 
+      rev()
+  ) +
+  labs(
+    title = "Preu per metre quadrat segons l'eficiència energètica",
+    subtitle = "S'exclouen transaccions amb preu per sobre del percentil 95"
+  ) +
+  xlab("Eficiència energètica") +
+  ylab("Preu de venda") +
+  theme_bw()
+```
+
+```{r graf_preu_espai}
+# totes les observacions
+tbl_houses_subset |>
+  filter(
+    sale_price < quantile(sale_price, .95),
+    floor_area < quantile(floor_area, .95)
+  ) |> 
+  ggplot(aes(floor_area, sale_price)) +
+  geom_point(aes(colour = city)) +
+  geom_smooth() +
+  labs(
+    title = "Preu (milers d'euros) en funció de l'espai segons la ciutat",
+    subtitle = "S'inclouen totes les transaccions",
+    colour = "Ciutat"
+  ) +
+  xlab("Metres quadrats útils") +
+  ylab("Preu de venda") +
+  theme_bw()
+
+# sense observacions extremes
+tbl_houses_subset |> 
+  ggplot(aes(floor_area, sale_price)) +
+  geom_point(aes(colour = city)) +
+  geom_smooth() +
+  labs(
+    title = "Preu (milers d'euros) en funció de l'espai segons la ciutat",
+    subtitle = "S'inclouen totes les transaccions",
+    colour = "Ciutat"
+  ) +
+  xlab("Metres quadrats útils") +
+  ylab("Preu de venda") +
+  theme_bw()
+```
+
+```{r graf_temps_espai_preu}
+tbl_houses_subset |> 
+  mutate(
+    price_clasif = cut(price_metre, 5)
+  ) |> 
+  ggplot(aes(price_clasif, time_on_market)) +
+  geom_boxplot(
+    fill = brewer.pal(5, "RdYlGn") |> 
+      rev()
+    ) +
+  xlab("Rang de preu") +
+  ylab("Dies al mercat") +
+  labs(
+    title = "Temps d'una vivenda al mercat segons el preu per metre quadrat",
+    subtitle = "S'inclouen totes les observacions"
+  ) +
+  theme_bw()
+
+tbl_houses_subset |> 
+  mutate(
+    space_clasif = cut(floor_area, 5)
+  ) |> 
+  ggplot(aes(space_clasif, time_on_market)) +
+  geom_boxplot(
+    fill = brewer.pal(5, "RdYlGn") |> 
+      rev()
+    ) +
+  xlab("Rang de metres quadrats") +
+  ylab("Dies al mercat") +
+  labs(
+    title = "Temps d'una vivenda al mercat segons els metres quadrats",
+    subtitle = "S'inclouen totes les observacions"
+  ) +
+  theme_bw()
+```
+
+
 :::
 
 
 ## Preprocessing {.smaller}
 
 - Teníem moltes dades, en vam seleccionar 5.000
+- Recodificar missings *(i.e- 99999 --> NA)*
+- Eliminar vaixells de la base de dades *floor_area = 0*
 - La variable `type` tenia massa nivells, vam *fusionar* nivells similars
-- No hi havia massa missings, els vam crear i els vam imputar utilitzant
+- No hi havia massa missings, els vam crear i els vam imputar utilitzant:
   + MICE
   + KNN
 
-## Clústering i validació {.smaller}
+## Clústering i validació {.smaller .scrollable}
+
+```{r}
+paste0(wd, "DATA/clust0.RData") |> load()
+```
+
 
 ::: panel-tabset
 
@@ -146,48 +330,102 @@ fins a quin punt és necessari?
 - Jeràrquic:
   + Distància de Gower^[Variables numèriques i categòriques]
   + Mètode de Ward
+  
+![](/template_files/figure-revealjs/dend_jerarq0.png)
 
-- No jeràrquic:^[Variables numèriques]
-  + K-means
-  + K-medians
+- No jeràrquic:
+  + K-means^[Variables numèriques]
+  
+```{r graf_kmeans5}
+# color palette
+pal <- brewer.pal(5, "Accent")[clust_kmeans$nclust5$cluster] |> 
+  setNames(paste0("Cluster", clust_kmeans$nclust5$cluster))
+
+# graf
+tbl_houses_subset |> 
+  ggplot(aes(sale_price, floor_area)) +
+  geom_point(aes(colour = pal)) +
+  labs(
+    title = "Agrupacions amb 5 clústers"
+  ) +
+  ylab("Metres quadrats útils") +
+  xlab("Preu de venda (milers d'euros)") +
+  theme_bw() +
+  theme(
+    legend.position = "none"
+  ) +
+  facet_wrap( ~ city)
+
+tbl_houses_subset |> 
+  ggplot(aes(sale_price, time_on_market)) +
+  geom_point(aes(colour = pal)) +
+  labs(
+    title = "Agrupacions amb 5 clústers"
+  ) +
+  ylab("Dies al mercat") +
+  xlab("Preu de venda (milers d'euros)") +
+  theme_bw() +
+  theme(
+    legend.position = "none"
+  ) +
+  facet_wrap(~ city)
+
+```
+
+
+```{r graf_kmeans6}
+# palette
+pal <- brewer.pal(6, "Accent")[clust_kmeans$nclust6$cluster] |> 
+  setNames(paste0("Cluster", clust_kmeans$nclust6$cluster))
+
+# graf
+tbl_houses_subset |> 
+  ggplot(aes(sale_price, floor_area)) +
+  geom_point(aes(colour = pal)) +
+  labs(
+    title = "Agrupacions amb 6 clústers"
+  ) +
+  ylab("Dies al mercat") +
+  xlab("Preu de venda (milers d'euros)") +
+  theme_bw() +
+  theme(
+    legend.position = "none"
+  ) +
+  facet_wrap( ~ city)
+
+tbl_houses_subset |> 
+  ggplot(aes(sale_price, time_on_market)) +
+  geom_point(aes(colour = pal)) +
+  labs(
+    title = "Agrupacions amb 6 clústers"
+  ) +
+  ylab("Metres quadrats útils") +
+  xlab("Preu de venda (milers d'euros)") +
+  theme_bw() +
+  theme(
+    legend.position = "none"
+  ) +
+  facet_wrap(~ city)
+```
+
 
 ### Validació
 
-- Inèricia
-- Calinski
-- $\sigma_{between}$ / $\sigma_{total}$
-- Elbow method
+- Inèricia & Calinski
+- Interpretabilitat
 - Scatterplot
 - Profiling
-- 6 grups
+
+![](/template_files/figure-revealjs/valida01.png)
+
+![](/template_files/figure-revealjs/valida02.png){height="75%"}
+<!--
+![](/template_files/figure-revealjs/valida03.png){height="75%"} 
+-->
 
 :::
 
-## Profiling - opció 1 {.smaller}
-
-::: panel-tabset
-
-### Grup 1
-
-Fer un petit profiling de cada grup comentant les característiques que el diferencien de la resta:
-
-- Canviar el nom `Grup 1` pel nom amb el que bategem el grup
-- Taula amb estadístics resum
-- Un parell de gràfics
-
-### Grup 2
-
-### Grup 3
-
-### Grup 4
-
-### Grup 5
-
-### Grup 6
-
-:::
-
-## Profiling - opció 2 {.smaller}
+## Profiling {.smaller .scrollable}
 
 ::: panel-tabset
 
@@ -209,216 +447,151 @@ Després fer una comparació general i batejar els grups amb noms.
 
 # Què hem fet?
 
-## PCA {.smaller}
+## PCA {.smaller .scrollable}
 
 ::: panel-tabset
 ### Dimensions significatives
 
 - Variància explicada
 - Regla de Kàiser
-- Elbow method
 
-### Interpretació de les dimensions
+```{r pca}
+lis_pca0 <- tbl_houses_subset[, sapply(tbl_houses_subset, is.numeric)] |> 
+  prcomp(scale = TRUE)
 
-- Correlació de les variables originals sobre les dimensions
+eigenvalues <- lis_pca0[["sdev"]]**2
+var_explica <- cumsum(eigenvalues/sum(eigenvalues))
 
-:::
-
-## Anàlisi discriminant {.smaller}
-
-## Clústering i validació {.smaller}
-
-## Profiling {.smaller}
-
-# Conclusions
-
-# Template
-
-## Resources
-
--   [Quarto - revealjs](https://quarto.org/docs/presentations/revealjs/)
--   [Markdown](https://www.markdownguide.org/)
--   [Presentation](https://quarto.org/docs/presentations/revealjs/presenting.html)
--   [Quarto - Advanced revealjs](https://quarto.org/docs/presentations/revealjs/advanced.html)
-
-## Diapos i seccions
-
--   Seccions (# Basics)
--   Diapos (## Diapos i seccions)
-
-------------------------------------------------------------------------
-
--   Diapo sense títol (---)
-
-## Incremental vs nonIncremental & Pauses {.Small}
-
-::: incremental
--   Incremental (amb cada click apareix un nou punt)
-    -   Punt 1
-    -   etc
-:::
-
-::: nonincremental
--   No incremental (tots els punts apareixen alhora)
-    -   Punt A
-    -   etc
-:::
-
-. . .
-
--   Per fer una pausa separar-la amb (. . .)
--   Apareixen tots alhora, però no des del principi
-
-## Estructura: Columnes
-
-::: columns
-::: {.column width="30%"}
-Left column
-:::
-
-::: {.column width="40%"}
-Center column
-:::
-
-::: {.column width="30%"}
-Right column
-:::
-:::
-
-## Massa contingut: Fes-lo petit 
-
--   Cal afegir  al costat del títol de la diapo
--   Punt 2
--   Punt 3
--   Punt 4
--   Punt 5
--   Punt 6
--   Punt 7
--   Punt 8
--   Punt 9
--   Punt 10
--   Punt 11
--   Punt 12
--   Punt 13
--   Punt 14
-
-## Massa contingut: Utilitza l'scroll {.scrollable}
-
--   Cal afegir {.scrollable} al costat del títol de la diapo
--   Punt 2
--   Punt 3
--   Punt 4
--   Punt 5
--   Punt 6
--   Punt 7
--   Punt 8
--   Punt 9
--   Punt 10
--   Punt 11
--   Punt 12
--   Punt 13
--   Punt 14
-
-## Notes de presentador
-
-Això és el que es veu a la presentació, però si el presentador prem la tecla `s`...
-
-::: notes
-Des de la visió de presntador es veurà això.
-:::
-
-## Notes a peu de pàgina
-
-Una mica de text per aquí[^1]
-
-[^1]: Una nota a peu de pàgina amb referència (.md syntax)
-
-::: aside
-Una nota a peu de pàgina sense referència (aside)
-:::
-
-## Imatges {.nostretch}
-
-Podem afegir imatges controlant la seva mida. Per fer-ho cal:
-
--   Desctivar l'ajust automàtic {.nostrech} al títol de la diapo.
--   Declarar l'argument {width="x%"} amb l'imatge.
-
-::: columns
-::: {.column width="50%"}
-![Tux](/template_files/figure-revealjs/tux.png){width="30%"}
-:::
-
-::: {.column width="50%"}
--   Podem utilitzar les columnes per ubicat l'imatge a una banda i, per exemple, text a l'altre.
-:::
-:::
-
-## Codi {.scrollable}
-
--   Es poden especificar les opcions del chunk de codi al gust.
--   També es pot utilitzar codi d'altres llenguatges (i.e python)
-
-. . .
-
-```{r}
-#| echo: true
-#| code-line-numbers: "3"
-#| code-fold: show
-
-x <- iris[,1]
-y <- iris[,2]
-model <- lm(y ~ x)
+x_pca0 <- lis_pca0[["x"]][, 1:3]
 ```
 
-. . .
-
-```{r}
-#| echo: true
-#| code-line-numbers: "|1|2"
-#| out-width: "100%"
-#| output-location: default
-
-plot(y ~ x)
-abline(coef = model$coefficients)
+```{r siginfic_pcs}
+matrix(c(eigenvalues, var_explica), byrow = FALSE, ncol = 2,
+  dimnames = list(c(paste0("PC", 1:length(eigenvalues))), c("Eigenvalue", "Variància Explicada"))) |> 
+  round(digits = 3) |> 
+  knitr::kable(align = "c")
 ```
 
-## Fragments
+### Variables numèriques
 
-::: fragment
-Fade in
+```{r}
+cor(x_pca0, tbl_houses_subset[, sapply(tbl_houses_subset, is.numeric)]) |> 
+  t() |> round(3) |> knitr::kable(caption = "Corelació entre les variables originals i les dimensions")
+```
+
+```{r}
+i <- 1
+j <- 2
+
+dimX <- lis_pca0[["rotation"]][, paste0("PC", i)]
+dimY <- lis_pca0[["rotation"]][, paste0("PC", j)]
+
+rangX <- range(dimX) + c(-.5, .5)
+rangY <- range(dimY) + c(-.5, .5)
+
+plot(NULL, xlim = rangX, ylim = rangY, xlab = i, ylab = j,
+     main = paste("Dimensions factorials", i, "i", j), las = 1)
+abline(v = 0, h = 0)
+arrows(x0 = 0, y0 = 0, x1 = dimX, y1 = dimY, lwd = 2)
+text(dimX, dimY, names(dimX), offset = 3)
+```
+
+```{r}
+i <- 1
+j <- 3
+
+dimX <- lis_pca0[["rotation"]][, paste0("PC", i)]
+dimY <- lis_pca0[["rotation"]][, paste0("PC", j)]
+
+rangX <- range(dimX) + c(-.5, .5)
+rangY <- range(dimY) + c(-.5, .5)
+
+plot(NULL, xlim = rangX, ylim = rangY, xlab = i, ylab = j,
+     main = paste("Dimensions factorials", i, "i", j), las = 1)
+abline(v = 0, h = 0)
+arrows(x0 = 0, y0 = 0, x1 = dimX, y1 = dimY, lwd = 2)
+text(dimX, dimY, names(dimX), offset = 3)
+```
+
+```{r}
+i <- 2
+j <- 3
+
+dimX <- lis_pca0[["rotation"]][, paste0("PC", i)]
+dimY <- lis_pca0[["rotation"]][, paste0("PC", j)]
+
+rangX <- range(dimX) + c(-.5, .5)
+rangY <- range(dimY) + c(-.5, .5)
+
+plot(NULL, xlim = rangX, ylim = rangY, xlab = i, ylab = j,
+     main = paste("Dimensions factorials", i, "i", j), las = 1)
+abline(v = 0, h = 0)
+arrows(x0 = 0, y0 = 0, x1 = dimX, y1 = dimY, lwd = 2)
+text(dimX, dimY, names(dimX), offset = 3)
+```
+
+### Variables categòriques
+
+#### City
+
+![](/template_files/figure-revealjs/pca_categ1.png)
+
+#### Construction Period
+
+![](/template_files/figure-revealjs/pca_categ2.png)
+
+#### Interior condition
+
+![](/template_files/figure-revealjs/pca_categ3.png)
+
+#### Exterior condition
+
+![](/template_files/figure-revealjs/pca_categ4.png)
+
+#### Energy Label
+
+![](/template_files/figure-revealjs/pca_categ5.png)
+
+#### Year
+
+![](/template_files/figure-revealjs/pca_categ6.png)
+
+#### Busy Street
+
+![](/template_files/figure-revealjs/pca_categ7.png)
+
 :::
 
-::: {.fragment .fade-out}
-Fade out
-:::
+## Anàlisi discriminant {.smaller .scrollable}
 
-::: {.fragment .highlight-red}
-Highlight red
-:::
-
-::: {.fragment .fade-in-then-out}
-Fade in, then out
-:::
-
-::: {.fragment .fade-up}
-Slide up while fading in
-:::
-
-## Tabsets
+## Clústering i validació {.smaller .scrollable}
 
 ::: panel-tabset
-### Tab A
 
-Content for `Tab A`
+### Clústering
 
-### Tab B
+### Validació
 
-Content for `Tab B`
 :::
 
-## Bash
+## Profiling {.smaller .scrollable}
 
-```{bash}
-tree ~/Documents/Universitat -L 2
-```
+::: panel-tabset
+
+### Característica 1
+
+Per les característiques diferenciades entre grups:
+
+- Comparar els grups i senyalar els extrems
+  
+Després fer una comparació general i batejar els grups amb noms.
+
+### Característica 2
+
+### Característica 3
+
+### Comparació general
+
+:::
+
+# Conclusions

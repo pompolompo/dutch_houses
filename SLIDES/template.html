@@ -29,71 +29,6 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
-    /* CSS for syntax highlighting */
-    pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { line-height: 1.25; }
-    pre > code.sourceCode > span:empty { height: 1.2em; }
-    .sourceCode { overflow: visible; }
-    code.sourceCode > span { color: inherit; text-decoration: inherit; }
-    div.sourceCode { margin: 1em 0; }
-    pre.sourceCode { margin: 0; }
-    @media screen {
-    div.sourceCode { overflow: auto; }
-    }
-    @media print {
-    pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-    }
-    pre.numberSource code
-      { counter-reset: source-line 0; }
-    pre.numberSource code > span
-      { position: relative; left: -4em; counter-increment: source-line; }
-    pre.numberSource code > span > a:first-child::before
-      { content: counter(source-line);
-        position: relative; left: -1em; text-align: right; vertical-align: baseline;
-        border: none; display: inline-block;
-        -webkit-touch-callout: none; -webkit-user-select: none;
-        -khtml-user-select: none; -moz-user-select: none;
-        -ms-user-select: none; user-select: none;
-        padding: 0 4px; width: 4em;
-        color: #aaaaaa;
-      }
-    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-    div.sourceCode
-      { color: #003b4f; background-color: #f1f3f5; }
-    @media screen {
-    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-    }
-    code span { color: #003b4f; } /* Normal */
-    code span.al { color: #ad0000; } /* Alert */
-    code span.an { color: #5e5e5e; } /* Annotation */
-    code span.at { color: #657422; } /* Attribute */
-    code span.bn { color: #ad0000; } /* BaseN */
-    code span.bu { } /* BuiltIn */
-    code span.cf { color: #003b4f; } /* ControlFlow */
-    code span.ch { color: #20794d; } /* Char */
-    code span.cn { color: #8f5902; } /* Constant */
-    code span.co { color: #5e5e5e; } /* Comment */
-    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
-    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
-    code span.dt { color: #ad0000; } /* DataType */
-    code span.dv { color: #ad0000; } /* DecVal */
-    code span.er { color: #ad0000; } /* Error */
-    code span.ex { } /* Extension */
-    code span.fl { color: #ad0000; } /* Float */
-    code span.fu { color: #4758ab; } /* Function */
-    code span.im { color: #00769e; } /* Import */
-    code span.in { color: #5e5e5e; } /* Information */
-    code span.kw { color: #003b4f; } /* Keyword */
-    code span.op { color: #5e5e5e; } /* Operator */
-    code span.ot { color: #003b4f; } /* Other */
-    code span.pp { color: #ad0000; } /* Preprocessor */
-    code span.sc { color: #5e5e5e; } /* SpecialChar */
-    code span.ss { color: #20794d; } /* SpecialString */
-    code span.st { color: #20794d; } /* String */
-    code span.va { color: #111111; } /* Variable */
-    code span.vs { color: #20794d; } /* VerbatimString */
-    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="template_files/libs/revealjs/dist/theme/quarto.css">
   <link href="template_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -496,30 +431,112 @@ Grup X
 <aside><div>
 <p>Font: <a href="https://www.maastrichtuniversity.nl/">Maastricht University, Nils Kok</a></p>
 </div></aside></section>
-<section id="base-de-dades" class="slide level2 smaller">
+<section id="base-de-dades" class="slide level2 smaller scrollable">
 <h2>Base de dades</h2>
 <div class="panel-tabset">
 <ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">Variables numèriques</a></li><li><a href="#tabset-2-2">Variables categòriques</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1">
-<p>content here</p>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div>
+<ul>
+<li class="fragment">Valor de la transacció, en euros</li>
+<li class="fragment">Mida de la parcel·la, en <span class="math inline">\(m^2\)</span></li>
+<li class="fragment">Mida de la vivenda, en <span class="math inline">\(m^2\)</span> útils</li>
+<li class="fragment">Nombre d’habitacions, en unitats</li>
+<li class="fragment">Temps en el mercat, en dies</li>
+<li class="fragment"><em>Preu per metre quadrat</em></li>
+</ul>
+</div>
+</div><div class="column" style="width:40%;">
+<p><img data-src="/template_files/figure-revealjs/house3.png"></p>
+</div>
+</div>
 </div>
 <div id="tabset-2-2">
-<p>content there</p>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div>
+<ul>
+<li class="fragment">Ciutat, factor</li>
+<li class="fragment">Codi postal, factor</li>
+<li class="fragment">Tipus (pis, casa, granja, …), factor</li>
+<li class="fragment">Apartament, binària</li>
+<li class="fragment">Carrer sorollós, binària</li>
+<li class="fragment">Període de construcció, factor ordinal</li>
+<li class="fragment">Condició interior, factor ordinal</li>
+<li class="fragment">Condició exterior, factor ordinal</li>
+<li class="fragment">Any, factor ordinal</li>
+<li class="fragment">Mes, factor ordinal</li>
+<li class="fragment">Eficiència energètica, factor ordinal</li>
+</ul>
+</div>
+</div><div class="column" style="width:40%;">
+<p><img data-src="/template_files/figure-revealjs/house4.png"></p>
+</div>
+</div>
 </div>
 </div>
 </div>
 </section>
-<section id="descriptiva" class="slide level2 smaller">
+<section id="descriptiva" class="slide level2 smaller scrollable">
 <h2>Descriptiva</h2>
 <div class="panel-tabset">
-<ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1">Variables numèriques</a></li><li><a href="#tabset-3-2">Variables categòriques</a></li></ul>
+<ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1">Univariant</a></li><li><a href="#tabset-3-2">Bivariant</a></li></ul>
 <div class="tab-content">
 <div id="tabset-3-1">
-<p>fins a quin punt és necessari?</p>
+<p>to do</p>
 </div>
 <div id="tabset-3-2">
-<p>fins a quin punt és necessari?</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="template_files/figure-revealjs/graf_price_ecolabel-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="template_files/figure-revealjs/graf_price_ecolabel-2.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="template_files/figure-revealjs/graf_preu_espai-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="template_files/figure-revealjs/graf_preu_espai-2.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="template_files/figure-revealjs/graf_temps_espai_preu-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="template_files/figure-revealjs/graf_temps_espai_preu-2.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -528,15 +545,17 @@ Grup X
 <h2>Preprocessing</h2>
 <ul>
 <li>Teníem moltes dades, en vam seleccionar 5.000</li>
+<li>Recodificar missings <em>(i.e- 99999 –&gt; NA)</em></li>
+<li>Eliminar vaixells de la base de dades <em>floor_area = 0</em></li>
 <li>La variable <code>type</code> tenia massa nivells, vam <em>fusionar</em> nivells similars</li>
-<li>No hi havia massa missings, els vam crear i els vam imputar utilitzant
+<li>No hi havia massa missings, els vam crear i els vam imputar utilitzant:
 <ul>
 <li>MICE</li>
 <li>KNN</li>
 </ul></li>
 </ul>
 </section>
-<section id="clústering-i-validació" class="slide level2 smaller">
+<section id="clústering-i-validació" class="slide level2 smaller scrollable">
 <h2>Clústering i validació</h2>
 <div class="panel-tabset">
 <ul id="tabset-4" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-4-1">Clústering</a></li><li><a href="#tabset-4-2">Validació</a></li></ul>
@@ -548,39 +567,73 @@ Grup X
 <li>Distància de Gower<sup>1</sup></li>
 <li>Mètode de Ward</li>
 </ul></li>
-<li>No jeràrquic:<sup>2</sup>
+</ul>
+<p><img data-src="/template_files/figure-revealjs/dend_jerarq0.png"></p>
 <ul>
-<li>K-means</li>
-<li>K-medians</li>
+<li>No jeràrquic:
+<ul>
+<li>K-means<sup>2</sup></li>
 </ul></li>
 </ul>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="template_files/figure-revealjs/graf_kmeans5-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="template_files/figure-revealjs/graf_kmeans5-2.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="template_files/figure-revealjs/graf_kmeans6-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="template_files/figure-revealjs/graf_kmeans6-2.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
 </div>
 <div id="tabset-4-2">
 <ul>
-<li>Inèricia</li>
-<li>Calinski</li>
-<li><span class="math inline">\(\sigma_{between}\)</span> / <span class="math inline">\(\sigma_{total}\)</span></li>
-<li>Elbow method</li>
+<li>Inèricia &amp; Calinski</li>
+<li>Interpretabilitat</li>
 <li>Scatterplot</li>
 <li>Profiling</li>
-<li>6 grups</li>
 </ul>
+<p><img data-src="/template_files/figure-revealjs/valida01.png"></p>
+<p><img data-src="/template_files/figure-revealjs/valida02.png" style="height:75.0%"> <!--
+![](/template_files/figure-revealjs/valida03.png){height="75%"} 
+--></p>
 </div>
 </div>
 </div>
 <aside><ol class="aside-footnotes"><li id="fn1"><p>Variables numèriques i categòriques</p></li><li id="fn2"><p>Variables numèriques</p></li></ol></aside></section>
-<section id="profiling---opció-1" class="slide level2 smaller">
-<h2>Profiling - opció 1</h2>
+<section id="profiling" class="slide level2 smaller scrollable">
+<h2>Profiling</h2>
 <div class="panel-tabset">
-<ul id="tabset-5" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-5-1">Grup 1</a></li><li><a href="#tabset-5-2">Grup 2</a></li><li><a href="#tabset-5-3">Grup 3</a></li><li><a href="#tabset-5-4">Grup 4</a></li><li><a href="#tabset-5-5">Grup 5</a></li><li><a href="#tabset-5-6">Grup 6</a></li></ul>
+<ul id="tabset-5" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-5-1">Característica 1</a></li><li><a href="#tabset-5-2">Característica 2</a></li><li><a href="#tabset-5-3">Característica 3</a></li><li><a href="#tabset-5-4">Comparació general</a></li></ul>
 <div class="tab-content">
 <div id="tabset-5-1">
-<p>Fer un petit profiling de cada grup comentant les característiques que el diferencien de la resta:</p>
+<p>Per les característiques diferenciades entre grups:</p>
 <ul>
-<li>Canviar el nom <code>Grup 1</code> pel nom amb el que bategem el grup</li>
-<li>Taula amb estadístics resum</li>
-<li>Un parell de gràfics</li>
+<li>Comparar els grups i senyalar els extrems</li>
 </ul>
+<p>Després fer una comparació general i batejar els grups amb noms.</p>
 </div>
 <div id="tabset-5-2">
 
@@ -591,36 +644,6 @@ Grup X
 <div id="tabset-5-4">
 
 </div>
-<div id="tabset-5-5">
-
-</div>
-<div id="tabset-5-6">
-
-</div>
-</div>
-</div>
-</section>
-<section id="profiling---opció-2" class="slide level2 smaller">
-<h2>Profiling - opció 2</h2>
-<div class="panel-tabset">
-<ul id="tabset-6" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-6-1">Característica 1</a></li><li><a href="#tabset-6-2">Característica 2</a></li><li><a href="#tabset-6-3">Característica 3</a></li><li><a href="#tabset-6-4">Comparació general</a></li></ul>
-<div class="tab-content">
-<div id="tabset-6-1">
-<p>Per les característiques diferenciades entre grups:</p>
-<ul>
-<li>Comparar els grups i senyalar els extrems</li>
-</ul>
-<p>Després fer una comparació general i batejar els grups amb noms.</p>
-</div>
-<div id="tabset-6-2">
-
-</div>
-<div id="tabset-6-3">
-
-</div>
-<div id="tabset-6-4">
-
-</div>
 </div>
 </div>
 </section></section>
@@ -629,285 +652,214 @@ Grup X
 <h1>Què hem fet?</h1>
 
 </section>
-<section id="pca" class="slide level2 smaller">
+<section id="pca" class="slide level2 smaller scrollable">
 <h2>PCA</h2>
 <div class="panel-tabset">
-<ul id="tabset-7" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-7-1">Dimensions significatives</a></li><li><a href="#tabset-7-2">Interpretació de les dimensions</a></li></ul>
+<ul id="tabset-6" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-6-1">Dimensions significatives</a></li><li><a href="#tabset-6-2">Variables numèriques</a></li><li><a href="#tabset-6-3">Variables categòriques</a></li></ul>
 <div class="tab-content">
-<div id="tabset-7-1">
+<div id="tabset-6-1">
 <ul>
 <li>Variància explicada</li>
 <li>Regla de Kàiser</li>
-<li>Elbow method</li>
 </ul>
-</div>
-<div id="tabset-7-2">
-<ul>
-<li>Correlació de les variables originals sobre les dimensions</li>
-</ul>
-</div>
-</div>
-</div>
-</section>
-<section id="anàlisi-discriminant" class="slide level2 smaller">
-<h2>Anàlisi discriminant</h2>
-</section>
-<section id="clústering-i-validació-1" class="slide level2 smaller">
-<h2>Clústering i validació</h2>
-</section>
-<section id="profiling" class="slide level2 smaller">
-<h2>Profiling</h2>
-</section></section>
-<section id="conclusions" class="title-slide slide level1 center">
-<h1>Conclusions</h1>
-
-</section>
-
-<section>
-<section id="template" class="title-slide slide level1 center">
-<h1>Template</h1>
-
-</section>
-<section id="resources" class="slide level2">
-<h2>Resources</h2>
-<ul>
-<li><a href="https://quarto.org/docs/presentations/revealjs/">Quarto - revealjs</a></li>
-<li><a href="https://www.markdownguide.org/">Markdown</a></li>
-<li><a href="https://quarto.org/docs/presentations/revealjs/presenting.html">Presentation</a></li>
-<li><a href="https://quarto.org/docs/presentations/revealjs/advanced.html">Quarto - Advanced revealjs</a></li>
-</ul>
-</section>
-<section id="diapos-i-seccions" class="slide level2">
-<h2>Diapos i seccions</h2>
-<ul>
-<li>Seccions (# Basics)</li>
-<li>Diapos (## Diapos i seccions)</li>
-</ul>
-</section>
-<section class="slide level2">
-
-<ul>
-<li>Diapo sense títol (—)</li>
-</ul>
-</section>
-<section id="incremental-vs-nonincremental-pauses" class="slide level2 Small">
-<h2>Incremental vs nonIncremental &amp; Pauses</h2>
-<div>
-<ul>
-<li class="fragment">Incremental (amb cada click apareix un nou punt)
-<ul>
-<li class="fragment">Punt 1</li>
-<li class="fragment">etc</li>
-</ul></li>
-</ul>
-</div>
-<div>
-<ul>
-<li>No incremental (tots els punts apareixen alhora)
-<ul>
-<li>Punt A</li>
-<li>etc</li>
-</ul></li>
-</ul>
-</div>
-<div class="fragment">
-<ul>
-<li>Per fer una pausa separar-la amb (. . .)</li>
-<li>Apareixen tots alhora, però no des del principi</li>
-</ul>
-</div>
-</section>
-<section id="estructura-columnes" class="slide level2">
-<h2>Estructura: Columnes</h2>
-<div class="columns">
-<div class="column" style="width:30%;">
-<p>Left column</p>
-</div><div class="column" style="width:40%;">
-<p>Center column</p>
-</div><div class="column" style="width:30%;">
-<p>Right column</p>
-</div>
-</div>
-</section>
-<section id="massa-contingut-fes-lo-petit" class="slide level2">
-<h2>Massa contingut: Fes-lo petit</h2>
-<ul>
-<li>Cal afegir al costat del títol de la diapo</li>
-<li>Punt 2</li>
-<li>Punt 3</li>
-<li>Punt 4</li>
-<li>Punt 5</li>
-<li>Punt 6</li>
-<li>Punt 7</li>
-<li>Punt 8</li>
-<li>Punt 9</li>
-<li>Punt 10</li>
-<li>Punt 11</li>
-<li>Punt 12</li>
-<li>Punt 13</li>
-<li>Punt 14</li>
-</ul>
-</section>
-<section id="massa-contingut-utilitza-lscroll" class="slide level2 scrollable">
-<h2>Massa contingut: Utilitza l’scroll</h2>
-<ul>
-<li>Cal afegir {.scrollable} al costat del títol de la diapo</li>
-<li>Punt 2</li>
-<li>Punt 3</li>
-<li>Punt 4</li>
-<li>Punt 5</li>
-<li>Punt 6</li>
-<li>Punt 7</li>
-<li>Punt 8</li>
-<li>Punt 9</li>
-<li>Punt 10</li>
-<li>Punt 11</li>
-<li>Punt 12</li>
-<li>Punt 13</li>
-<li>Punt 14</li>
-</ul>
-</section>
-<section id="notes-de-presentador" class="slide level2">
-<h2>Notes de presentador</h2>
-<p>Això és el que es veu a la presentació, però si el presentador prem la tecla <code>s</code>…</p>
-<aside class="notes">
-<p>Des de la visió de presntador es veurà això.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="notes-a-peu-de-pàgina" class="slide level2">
-<h2>Notes a peu de pàgina</h2>
-<p>Una mica de text per aquí<sup>1</sup></p>
-
-<aside><div>
-<p>Una nota a peu de pàgina sense referència (aside)</p>
-</div><ol class="aside-footnotes"><li id="fn3"><p>Una nota a peu de pàgina amb referència (.md syntax)</p></li></ol></aside></section>
-<section id="imatges" class="slide level2 nostretch">
-<h2>Imatges</h2>
-<p>Podem afegir imatges controlant la seva mida. Per fer-ho cal:</p>
-<ul>
-<li>Desctivar l’ajust automàtic {.nostrech} al títol de la diapo.</li>
-<li>Declarar l’argument {width=“x%”} amb l’imatge.</li>
-</ul>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="/template_files/figure-revealjs/tux.png" style="width:30.0%"></p>
-<figcaption>Tux</figcaption>
-</figure>
-</div>
-</div><div class="column" style="width:50%;">
-<ul>
-<li>Podem utilitzar les columnes per ubicat l’imatge a una banda i, per exemple, text a l’altre.</li>
-</ul>
-</div>
-</div>
-</section>
-<section id="codi" class="slide level2 scrollable">
-<h2>Codi</h2>
-<ul>
-<li>Es poden especificar les opcions del chunk de codi al gust.</li>
-<li>També es pot utilitzar codi d’altres llenguatges (i.e python)</li>
-</ul>
-<div class="fragment">
 <div class="cell">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1" data-code-line-numbers="3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a>x <span class="ot">&lt;-</span> iris[,<span class="dv">1</span>]</span>
-<span id="cb1-2"><a href=""></a>y <span class="ot">&lt;-</span> iris[,<span class="dv">2</span>]</span>
-<span id="cb1-3"><a href=""></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="cell-output-display">
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: center;">Eigenvalue</th>
+<th style="text-align: center;">Variància Explicada</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">PC1</td>
+<td style="text-align: center;">2.559</td>
+<td style="text-align: center;">0.426</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PC2</td>
+<td style="text-align: center;">1.456</td>
+<td style="text-align: center;">0.669</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PC3</td>
+<td style="text-align: center;">0.865</td>
+<td style="text-align: center;">0.813</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PC4</td>
+<td style="text-align: center;">0.821</td>
+<td style="text-align: center;">0.950</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PC5</td>
+<td style="text-align: center;">0.245</td>
+<td style="text-align: center;">0.991</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PC6</td>
+<td style="text-align: center;">0.055</td>
+<td style="text-align: center;">1.000</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
-<div class="fragment">
+</div>
+<div id="tabset-6-2">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2" data-code-line-numbers="|1|2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a><span class="fu">plot</span>(y <span class="sc">~</span> x)</span>
-<span id="cb2-2"><a href=""></a><span class="fu">abline</span>(<span class="at">coef =</span> model<span class="sc">$</span>coefficients)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table>
+<caption>Corelació entre les variables originals i les dimensions</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">PC1</th>
+<th style="text-align: right;">PC2</th>
+<th style="text-align: right;">PC3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">parcel_size</td>
+<td style="text-align: right;">-0.485</td>
+<td style="text-align: right;">-0.190</td>
+<td style="text-align: right;">-0.298</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">floor_area</td>
+<td style="text-align: right;">-0.894</td>
+<td style="text-align: right;">-0.272</td>
+<td style="text-align: right;">0.172</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rooms</td>
+<td style="text-align: right;">-0.819</td>
+<td style="text-align: right;">-0.324</td>
+<td style="text-align: right;">0.264</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sale_price</td>
+<td style="text-align: right;">-0.872</td>
+<td style="text-align: right;">0.384</td>
+<td style="text-align: right;">-0.137</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">time_on_market</td>
+<td style="text-align: right;">0.003</td>
+<td style="text-align: right;">-0.593</td>
+<td style="text-align: right;">-0.730</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">price_metre</td>
+<td style="text-align: right;">-0.307</td>
+<td style="text-align: right;">0.861</td>
+<td style="text-align: right;">-0.354</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="template_files/figure-revealjs/unnamed-chunk-2-1.png" style="width:100.0%"></p>
+<p><img data-src="template_files/figure-revealjs/unnamed-chunk-3-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="template_files/figure-revealjs/unnamed-chunk-4-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="template_files/figure-revealjs/unnamed-chunk-5-1.png" width="960"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
+<div id="tabset-6-3">
+<h4 id="city">City</h4>
+<p><img data-src="/template_files/figure-revealjs/pca_categ1.png"></p>
+<h4 id="construction-period">Construction Period</h4>
+<p><img data-src="/template_files/figure-revealjs/pca_categ2.png"></p>
+<h4 id="interior-condition">Interior condition</h4>
+<p><img data-src="/template_files/figure-revealjs/pca_categ3.png"></p>
+<h4 id="exterior-condition">Exterior condition</h4>
+<p><img data-src="/template_files/figure-revealjs/pca_categ4.png"></p>
+<h4 id="energy-label">Energy Label</h4>
+<p><img data-src="/template_files/figure-revealjs/pca_categ5.png"></p>
+<h4 id="year">Year</h4>
+<p><img data-src="/template_files/figure-revealjs/pca_categ6.png"></p>
+<h4 id="busy-street">Busy Street</h4>
+<p><img data-src="/template_files/figure-revealjs/pca_categ7.png"></p>
+</div>
+</div>
+</div>
 </section>
-<section id="fragments" class="slide level2">
-<h2>Fragments</h2>
-<div class="fragment">
-<p>Fade in</p>
-</div>
-<div class="fragment fade-out">
-<p>Fade out</p>
-</div>
-<div class="fragment highlight-red">
-<p>Highlight red</p>
-</div>
-<div class="fragment fade-in-then-out">
-<p>Fade in, then out</p>
-</div>
-<div class="fragment fade-up">
-<p>Slide up while fading in</p>
-</div>
+<section id="anàlisi-discriminant" class="slide level2 smaller scrollable">
+<h2>Anàlisi discriminant</h2>
 </section>
-<section id="tabsets" class="slide level2">
-<h2>Tabsets</h2>
+<section id="clústering-i-validació-1" class="slide level2 smaller scrollable">
+<h2>Clústering i validació</h2>
 <div class="panel-tabset">
-<ul id="tabset-8" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-8-1">Tab A</a></li><li><a href="#tabset-8-2">Tab B</a></li></ul>
+<ul id="tabset-7" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-7-1">Clústering</a></li><li><a href="#tabset-7-2">Validació</a></li></ul>
+<div class="tab-content">
+<div id="tabset-7-1">
+
+</div>
+<div id="tabset-7-2">
+
+</div>
+</div>
+</div>
+</section>
+<section id="profiling-1" class="slide level2 smaller scrollable">
+<h2>Profiling</h2>
+<div class="panel-tabset">
+<ul id="tabset-8" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-8-1">Característica 1</a></li><li><a href="#tabset-8-2">Característica 2</a></li><li><a href="#tabset-8-3">Característica 3</a></li><li><a href="#tabset-8-4">Comparació general</a></li></ul>
 <div class="tab-content">
 <div id="tabset-8-1">
-<p>Content for <code>Tab A</code></p>
+<p>Per les característiques diferenciades entre grups:</p>
+<ul>
+<li>Comparar els grups i senyalar els extrems</li>
+</ul>
+<p>Després fer una comparació general i batejar els grups amb noms.</p>
 </div>
 <div id="tabset-8-2">
-<p>Content for <code>Tab B</code></p>
-</div>
-</div>
-</div>
-</section>
-<section id="bash" class="slide level2">
-<h2>Bash</h2>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>[01;34m/home/ferran/Documents/Universitat[0m
-├── [01;34mBIO[0m
-│&nbsp;&nbsp; └── [01;34mMED[0m
-├── [01;34mMULTI[0m
-│&nbsp;&nbsp; ├── [01;34mdutch_houses[0m
-│&nbsp;&nbsp; ├── [01;32mtextual_analysis.txt[0m
-│&nbsp;&nbsp; └── [01;34mTREBALL[0m
-├── [01;34mNPR[0m
-│&nbsp;&nbsp; ├── [01;34mBOOT[0m
-│&nbsp;&nbsp; ├── [01;34mPERM[0m
-│&nbsp;&nbsp; └── [01;34mRANGS[0m
-├── [01;34mSF[0m
-│&nbsp;&nbsp; ├── [01;34mIRPF[0m
-│&nbsp;&nbsp; ├── [01;34mISOC[0m
-│&nbsp;&nbsp; └── [01;34mIVA[0m
-└── [01;34mSIMULA[0m
-    ├── [01;32mevent_oriented.txt[0m
-    └── [01;32mslides_simula.pdf[0m
 
-15 directories, 3 files</code></pre>
 </div>
+<div id="tabset-8-3">
+
 </div>
-<div class="quarto-auto-generated-content">
-<p><img src="/template_files/figure-revealjs/upc.png" class="slide-logo"></p>
-<div class="footer footer-default">
-<p>Anàlisi Multivariant - Mercat inmobiliari neerlandès</p>
+<div id="tabset-8-4">
+
+</div>
 </div>
 </div>
 </section></section>
+<section id="conclusions" class="title-slide slide level1 center">
+<h1>Conclusions</h1>
+<div class="quarto-auto-generated-content">
+<p><img src="/template_files/figure-revealjs/upc.png" class="slide-logo"></p>
+<div class="footer footer-default">
+<p><a href="https://github.com/pompolompo/dutch_houses">Anàlisi Multivariant - Mercat inmobiliari neerlandès</a></p>
+</div>
+</div>
+</section>
+
 
     </div>
   </div>

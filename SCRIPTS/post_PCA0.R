@@ -36,7 +36,7 @@ source(paste0(wd, "FUNCS/", "Scatter_clust_function.R"))
 
 ## PCA0 -------------------------------------------------------------------
 lis_pca0 <- tbl_houses_subset[, sapply(tbl_houses_subset, is.numeric)] |> 
-  prcomp(scale. = TRUE)
+  prcomp(scale = TRUE)
 
 eigenvalues <- lis_pca0[["sdev"]]**2; round(eigenvalues, 3) # 3
 var_explica <- cumsum(eigenvalues/sum(eigenvalues)); round(var_explica, 3) # 3
