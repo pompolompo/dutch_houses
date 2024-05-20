@@ -43,7 +43,7 @@ barplot(pinerEix)
 
 ### CALCULEM LA ACUMULACIÓ D'INÈRCIA:
 #Cummulated Inertia in subspaces, from first principal component to the 11th dimension subspace
-barplot(100*cumsum(pc1$sdev[1:dim(dcon)[2]]^2)/dim(dcon)[2],
+barplot(100*cumsum(pc1$sdev[1:dim(dcon)[2]]^2)/dim(dcon)[2], col="lightgreen",
         main = "Percentatge acumulat d'inèrcia",names.arg = c("dim1", "dim2", "dim3","dim4","dim5","dim6"))
 abline(h=80,col="red")
 percInerAccum<-100*cumsum(pc1$sdev[1:dim(dcon)[2]]^2)/dim(dcon)[2]
@@ -88,7 +88,7 @@ eje3<-3 #tercera dimensió
 
 #haurem de mirar quantes dimensions son significatives i fer totes les combinacions significatives 2 a 2.
 
-plot(Psi[,eje1],Psi[,eje2]) #com es distrbueix els individus en primera i segona dimensio
+plot(Psi[,eje1],Psi[,eje2],xlab="dimensió 1",ylab="dimensió 2") #com es distrbueix els individus en primera i segona dimensio
 text(Psi[,eje1],Psi[,eje2],labels=iden, cex=0.5)
 axis(side=1, pos= 0, labels = F, col="cyan")
 axis(side=3, pos= 0, labels = F, col="cyan")
@@ -97,12 +97,12 @@ axis(side=4, pos= 0, labels = F, col="cyan")
 # Representació dels individus en les dimensions 1 i 2. Veiem alguns outliers. 
 
 
-plot(Psi[,eje1],Psi[,eje2], type="n")
+plot(Psi[,eje1],Psi[,eje2], xlab="dimensió 1",ylab="dimensió 2",type="n")
 text(Psi[,eje1],Psi[,eje2],labels=iden, cex=0.5)
-axis(side=1, pos= 0, labels = F, col="cyan")
-axis(side=3, pos= 0, labels = F, col="cyan")
-axis(side=2, pos= 0, labels = F, col="cyan")
-axis(side=4, pos= 0, labels = F, col="cyan")
+axis(side=1, pos= 0, labels = F, col="red")
+axis(side=3, pos= 0, labels = F, col="red")
+axis(side=2, pos= 0, labels = F, col="red")
+axis(side=4, pos= 0, labels = F, col="red")
 
 #Projection of variables
 Phi = cor(dcon,Psi)
@@ -143,13 +143,13 @@ text(X,Y,labels=etiq,col="darkblue", cex=0.7)
 
 
 ### PROJECCIÓ DELS CLÚSTERS
-varcat=factor(tbl_houses_subset[,16]) 
-plot(Psi[,1],Psi[,2],col=varcat)
-axis(side=1, pos= 0, labels = F, col="darkgray")
-axis(side=3, pos= 0, labels = F, col="darkgray")
-axis(side=2, pos= 0, labels = F, col="darkgray")
-axis(side=4, pos= 0, labels = F, col="darkgray")
-legend("bottomleft",levels(factor(varcat)),pch=1,col=c(1,2), cex=0.6)
+#varcat=factor(tbl_houses_subset[,16],labels = c("1","2","3","4","5","6","7")) 
+#plot(Psi[,1],Psi[,2],col=varcat)
+#axis(side=1, pos= 0, labels = F, col="darkgray")
+#axis(side=3, pos= 0, labels = F, col="darkgray")
+#axis(side=2, pos= 0, labels = F, col="darkgray")
+#axis(side=4, pos= 0, labels = F, col="darkgray")
+#legend("bottomleft",levels(factor(varcat)),pch=1,col=c(1,2), cex=0.6)
 
 
 ### PROJECCIÓ VARIABLES QUALITATIVES: Agafarem el nuvol de punts i pintarem 
@@ -169,33 +169,33 @@ legend("bottomleft",levels(factor(varcat)),pch=1,col=c(1,2), cex=0.6)
 
 
 #select your qualitative variable
-k<-17
+k<-18
 
 varcat<-factor(tbl_houses_subset[,k])
 fdic1 = tapply(Psi[,eje1],varcat,mean)
 fdic2 = tapply(Psi[,eje2],varcat,mean) 
 text(fdic1,fdic2,labels=levels(varcat),col="yellow", cex=0.7)
 
-plot(Psi[,eje1],Psi[,eje2],type="n")
-axis(side=1, pos= 0, labels = F, col="cyan")
-axis(side=3, pos= 0, labels = F, col="cyan")
-axis(side=2, pos= 0, labels = F, col="cyan")
-axis(side=4, pos= 0, labels = F, col="cyan")
+plot(Psi[,eje1],Psi[,eje2],type="n",xlab="dimensió 1",ylab="dimensió 2",main = "projeccions dels centroides dels clústers")
+axis(side=1, pos= 0, labels = F, col="blue")
+axis(side=3, pos= 0, labels = F, col="blue")
+axis(side=2, pos= 0, labels = F, col="blue")
+axis(side=4, pos= 0, labels = F, col="blue")
 
-text(fdic1,fdic2,labels=levels(varcat),col="blue", cex=0.7)
+text(fdic1,fdic2,labels=levels(varcat),col="red", cex=0.7)
 
 #all qualitative together
 X<-Phi[,eje1]
 Y<-Phi[,eje2]
 plot(Psi[,eje1],Psi[,eje2],type="n")
-axis(side=1, pos= 0, labels = F, col="cyan")
-axis(side=3, pos= 0, labels = F, col="cyan")
-axis(side=2, pos= 0, labels = F, col="cyan")
-axis(side=4, pos= 0, labels = F, col="cyan")
+axis(side=1, pos= 0, labels = F, col="black")
+axis(side=3, pos= 0, labels = F, col="black")
+axis(side=2, pos= 0, labels = F, col="black")
+axis(side=4, pos= 0, labels = F, col="black")
 
 #nominal qualitative variables
 
-dcat<-c(1,2,4,8,9,10,13,14,17)
+dcat<-c(1,2,3,4,10,14,16) #variables qualitatives interessants
 colors<-rainbow(length(dcat))
 
 c<-1
@@ -211,15 +211,15 @@ legend("bottomleft",names(tbl_houses_subset)[dcat],pch=1,col=colors, cex=0.6)
 
 #Mateix gràfic però amb zoom:
 fm<- 20
-plot(Psi[,eje1],Psi[,eje2],type="n",xlim=c(-4,2), ylim=c(-2,3))
-axis(side=1, pos= 0, labels = F, col="cyan")
-axis(side=3, pos= 0, labels = F, col="cyan")
-axis(side=2, pos= 0, labels = F, col="cyan")
-axis(side=4, pos= 0, labels = F, col="cyan")
+plot(Psi[,eje1],Psi[,eje2],type="n",xlim=c(-4,2), ylim=c(-2,3),ylab="Dimensió 2",xlab = "Dimensió 1")
+axis(side=1, pos= 0, labels = F, col="black")
+axis(side=3, pos= 0, labels = F, col="black")
+axis(side=2, pos= 0, labels = F, col="black")
+axis(side=4, pos= 0, labels = F, col="black")
 
 #add projections of numerical variables in background
-arrows(ze, ze, X, Y, length = 0.07,col="lightgray")
-text(X,Y,labels=etiq,col="gray", cex=0.7)
+arrows(ze, ze, X, Y, length = 0.07,col="black")
+text(X,Y,labels=etiq,col="black", cex=0.7)
 
 #add centroids
 c<-1
@@ -230,10 +230,10 @@ for(k in dcat){
   text(fdic1,fdic2,labels=levels(factor(tbl_houses_subset[,k])),col=seguentColor, cex=0.6)
   c<-c+1
 }
-legend("bottomleft",names(tbl_houses_subset)[dcat],pch=1,col=colors, cex=0.6)
+legend("topleft",names(tbl_houses_subset)[dcat],pch=1,col=colors, cex=0.6)
 
 ### AFEGIR VARIABLE ORDINAL
-dordi<- 8
+dordi<- c(8)
 levels(factor(tbl_houses_subset[,dordi]))
 tbl_houses_subset[,dordi[1]] <- factor(tbl_houses_subset[,dordi[1]], ordered=TRUE,  levels= c("Mala ","mala/mediocre","mediocre","mediocre/estàndard","estàndard","estàndard/bé","bé","bé/excel·lent","excel·lent"))
 levels(tbl_houses_subset[,dordi])
