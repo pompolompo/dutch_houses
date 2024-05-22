@@ -10,7 +10,7 @@ library(factoextra)
 library(corrplot)
 
 
-# Base de datos
+# Base de dades
 ## Modifiquem la variable city, degut a que les etiquetes eren massa llargues 
 ##i al representar-les es sobreposaven entre elles. Així doncs, per tal de poder 
 ##visualitzar millor els gràfics, hem numerat les ciutats de l'1 al 4, mantenint-la com a factor.
@@ -19,9 +19,13 @@ tbl_houses_subsetACM<-tbl_houses_subset[-15]
 categories=c("Amsterdam","Rotterdam","The Hague","Utrecht")
 valors_numerics=c("1","2","3","4")
 tbl_houses_subsetACM$city<-factor(tbl_houses_subset$city, levels=categories, labels=valors_numerics)
-#canviar noms variables més curts!!!!!
 
-# Ens quedem amb les variables categóriques:
+#Modifiquem també el nom d'algunes variables, fent-les també mes curtes, 
+#per a la millor visualització dels diferents gráfics:
+names(tbl_houses_subsetACM)[names(tbl_houses_subsetACM) == "construction_period"] <- "period"
+names(tbl_houses_subsetACM)[names(tbl_houses_subsetACM) == "interior_condition"] <- "int_cond"
+names(tbl_houses_subsetACM)[names(tbl_houses_subsetACM) == "exterior_condition"] <- "ext_cond"
+
 tipo <- sapply(tbl_houses_subsetACM, class)
 varCat <- names(tipo)[which(tipo %in% c("factor", "character"))]
 
@@ -43,12 +47,12 @@ res.mca
 eig.val <- get_eigenvalue(res.mca)
 head(eig.val)
 
-## Visualizar porcentajes de inercia por cada dimension
-### Para determinar el numero de componentes principales se puede mirar un Scree Plot, 
-### que es un plot de los eigenvalues ordenados de mayor a menor. 
-### El nÃºmero de componentes es determinado en el punto mas allÃ¡ del cual los 
-### valores propios (egeinvalues) restantes son todos relativamente pequeÃ±os y 
-### de tamaÃ±o comparable.
+## Visualitzar percentatges d'inercia per a cada dimensió:
+### Per determinar el numero de components principals es pot mirar un Scree Plot, 
+### que es un plot dels eigenvalues ordenats de major a menor. 
+### El numero de components es determinat en el punt més allà del qual els
+### valors propis (egeinvalues) restants son tots relativament petits i 
+### de mida comparable.
 fviz_screeplot(res.mca, addlabels = TRUE, ylim = c(0, 5))
 
 #Obsevem el percentatge de variabilitat explicada per a cadascuna de les dimensions que més l'expliquen.
@@ -169,55 +173,45 @@ fviz_mca_var(res.mca, col.var = "contrib",
              ggtheme = theme_minimal())
 
 # ==============================================================================
-# Individuos
+# Anàlisi per individus
 ind <- get_mca_ind(res.mca)
 ind
 
-## Coordenadas
+## Coordenades
 head(ind$coord)
 
-## calidad de representacion
+## Qualitat de representació
 head(ind$cos2)
 
-## Contribuciones
+## Contribucions
 head(ind$contrib)
 
-## contribucion y calidad de representacion
+## contribució i qualitat de representació
 fviz_mca_ind(res.mca, col.ind = "cos2",
              gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
              repel = TRUE,
              ggtheme = theme_minimal())
 
-## Cos2 de individuos
+## Cos2 dels individua
 fviz_cos2(res.mca, choice = "ind", axes = 1:2, top = 20)
-## contribucion de individuos a las variables
+
+## contribució d'individus a les variables
 fviz_contrib(res.mca, choice = "ind", axes = 1:2, top = 20)
 
-## Podemos agrupar los individuos
-### El siguiente cÃ³digo agrupa los individuos por colores utilizando los niveles 
-### de la variable de elecciÃ³n
-### El argumento habillage se usa para especificar el factor de la variable para agrupar 
-### los individuos por color. Se agrega tambiÃ©n un elipse de concentraciÃ³n alrededor 
-### de cada grupo usando el argumento addEllipses = TRUE.
-fviz_mca_ind(res.mca,
-             label = "none", 
-             habillage = "Vomiting", # color por grupos
-             palette = c("#00AFBB", "#E7B800"),
+#Afegim la variable grup del cluster per a  poder agrupar els individus segons el cluster
+tbl_houses_subsetACM2<-tbl_houses_subsetACM
+tbl_houses_subsetACM2$cluster_group<-tbl_houses_subset$cluster_group
+mca <- MCA(tbl_houses_subsetACM2, quanti.sup = c(5:7,12,13,16), quali.sup = c(10,11,17), graph = FALSE)
+### S'agrupen els diferents individus segons els diferents nivells de clusters, representan-los de diferents colots
+fviz_mca_ind(mca,
+             label = "all", 
+             habillage = "cluster_group", # color por grupos
+             palette = "Blues",
              addEllipses = TRUE, ellipse.type = "confidence", #elipse de concentracion  y punto medio
              ggtheme = theme_minimal())
 
-fviz_ellipses(res.mca, c("Vomiting", "Fever"),
+fviz_ellipses(mca, c(1:4,8:9,15), geom = "point", pointsize = 0.1)
+
+fviz_ellipses(mca, "apartment",
               geom = "point")
 
-fviz_ellipses(res.mca, 1:4, geom = "point")
-
-# ==============================================================================
-# DescripciÃ³n de la dimensiÃ³n
-## Correlacion de varaibles con las dimensiones
-res.desc <- dimdesc(res.mca, axes = c(1,2))
-
-### Descripcion de dimension 1
-res.desc[[1]]
-
-### Descripcion de dimension 2
-res.desc[[2]]
