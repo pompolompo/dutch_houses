@@ -4,8 +4,6 @@
 # written on: 25-04-2024
 # purpose: do PCA
 
-tbl_houses_subset$temps_mercat<- as.factor(tbl_houses_subset$temps_mercat)
-
 objects()
 attributes(tbl_houses_subset)
 
@@ -193,29 +191,23 @@ axis(side=3, pos= 0, labels = F, col="black")
 axis(side=2, pos= 0, labels = F, col="black")
 axis(side=4, pos= 0, labels = F, col="black")
 
-#nominal qualitative variables
 
-dcat<-c(1,2,3,4,10,14,16) #variables qualitatives interessants
-colors<-rainbow(length(dcat))
+# FORMAT DE GRÀFICS DEL PCA AMB ADDICIÓ DE LES VARIABLES CATEGÒRIQUES
+# hem anat canviat les variables a l'objecte "dcat" per tal de realitzar
+# certs gràfics que es trobaran en el treball
 
-c<-1
-for(k in dcat){
-  seguentColor<-colors[c]
-  fdic1 = tapply(Psi[,eje1],tbl_houses_subset[,k],mean)
-  fdic2 = tapply(Psi[,eje2],tbl_houses_subset[,k],mean)
-  text(fdic1,fdic2,labels=levels(factor(tbl_houses_subset[,k])),col=seguentColor, cex=0.6)
-  c<-c+1
-}
-legend("bottomleft",names(tbl_houses_subset)[dcat],pch=1,col=colors, cex=0.6)
-#he pintat el centroide de totes les variables que hem seleccionat
+#dcat<-c(1,2,4,8,9,10,14,16) #variables qualitatives interessants
+dcat<-c(1,16,8,9,2,4,10,14)
+#dcat <- c(1)
+colors<-c("red","blue","darkgreen","darkorange","purple","magenta","#97122f","#999950")
 
-#Mateix gràfic però amb zoom:
-fm<- 20
-plot(Psi[,eje1],Psi[,eje2],type="n",xlim=c(-4,2), ylim=c(-2,3),ylab="Dimensió 2",xlab = "Dimensió 1")
+plot(Psi[,eje1],Psi[,eje2],type="n",xlim=c(-1.5,1), ylim=c(-1,1),
+     ylab="Dimensió 2",xlab = "Dimensió 1",main = "Projecció variables categòriques")
 axis(side=1, pos= 0, labels = F, col="black")
 axis(side=3, pos= 0, labels = F, col="black")
 axis(side=2, pos= 0, labels = F, col="black")
 axis(side=4, pos= 0, labels = F, col="black")
+
 
 #add projections of numerical variables in background
 arrows(ze, ze, X, Y, length = 0.07,col="black")
@@ -230,52 +222,4 @@ for(k in dcat){
   text(fdic1,fdic2,labels=levels(factor(tbl_houses_subset[,k])),col=seguentColor, cex=0.6)
   c<-c+1
 }
-legend("topleft",names(tbl_houses_subset)[dcat],pch=1,col=colors, cex=0.6)
-
-### AFEGIR VARIABLE ORDINAL
-dordi<- c(8)
-levels(factor(tbl_houses_subset[,dordi]))
-tbl_houses_subset[,dordi[1]] <- factor(tbl_houses_subset[,dordi[1]], ordered=TRUE,  levels= c("Mala ","mala/mediocre","mediocre","mediocre/estàndard","estàndard","estàndard/bé","bé","bé/excel·lent","excel·lent"))
-levels(tbl_houses_subset[,dordi])
-
-c<-1
-col<-1
-for(k in dordi){
-  seguentColor<-colors[col]
-  fdic1 = tapply(Psi[,eje1],tbl_houses_subset[,k],mean)
-  fdic2 = tapply(Psi[,eje2],tbl_houses_subset[,k],mean) 
-  lines(fdic1,fdic2,pch=16,col=seguentColor)
-  text(fdic1,fdic2,labels=levels(tbl_houses_subset[,k]),col=seguentColor, cex=0.6)
-  c<-c+1
-  col<-col+1
-}
-legend("topleft",names(tbl_houses_subset)[dordi],pch=1,col=colors[1:length(dordi)], cex=0.6)
-
-#using our own colors palette
-# search palettes in internet. One might be https://r-charts.com/es/colores/
-
-colors<-c("red", "blue", "darkgreen", "orange", "violet", "magenta","green","pink","yellow")
-
-#represent numerical variables in background
-plot(Psi[,eje1],Psi[,eje2],type="n",xlim=c(-1,1.5), ylim=c(-2,1))
-axis(side=1, pos= 0, labels = F, col="cyan")
-axis(side=3, pos= 0, labels = F, col="cyan")
-axis(side=2, pos= 0, labels = F, col="cyan")
-axis(side=4, pos= 0, labels = F, col="cyan")
-
-#add projections of numerical variables in background
-arrows(ze, ze, X, Y, length = 0.07,col="lightgray")
-text(X,Y,labels=etiq,col="gray", cex=0.7)
-
-#add centroids
-c<-1
-for(k in dcat){
-  seguentColor<-colors[c]
-  
-  fdic1 = tapply(Psi[,eje1],tbl_houses_subset[,k],mean)
-  fdic2 = tapply(Psi[,eje2],tbl_houses_subset[,k],mean) 
-  text(fdic1,fdic2,labels=levels(factor(tbl_houses_subset[,k])),col=seguentColor, cex=0.6)
-  c<-c+1
-}
-legend("bottomright",names(tbl_houses_subset)[dcat],pch=19,col=colors, cex=0.45)
-
+legend("topleft",names(tbl_houses_subset)[dcat],pch=21,col=colors, cex=0.65)
