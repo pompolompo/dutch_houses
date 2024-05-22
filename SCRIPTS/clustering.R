@@ -14,6 +14,7 @@
 
 # Libraries ---------------------------------------------------------------
 library(cluster)
+library(dendextend)
 
 # Global options ----------------------------------------------------------
 wd <- "/home/ferran/Documents/Universitat/MULTI/dutch_houses/"
@@ -55,6 +56,9 @@ jerarq_mixt <- hclust(
   method = "ward.D2"
 )
 
+color_branches(as.dendrogram(jerarq_mixt), k = 6) |> 
+  plot(main = "Variables mixtes", leaflab = "none")
+
 plot(jerarq_mixt, hang = -1, cex = 0.6, labels = FALSE) # dendograma
 # hang permet disminuir la grandària del text
 
@@ -73,6 +77,9 @@ jerarq_num <- hclust(
   d = distances[["euclid"]], 
   method = "ward.D2"
   )  
+
+color_branches(as.dendrogram(jerarq_num), k = 6) |> 
+  plot(main = "Variables numèriques", leaflab = "none")
 
 plot(jerarq_num, hang = -1, cex = 0.6, labels = FALSE)
 
@@ -148,11 +155,11 @@ centre_kmeans <- lapply(
 #           - calinski = SSE_entreclust/SSE_dinsclust
 #       3. s'escull el nombre de clústers on canvii bruscament la mètrica
 
-plot(x = c, y = resum_kmeans[, "inertia*"], type = "b", lwd = 3,
+plot(x = c, y = resum_kmeans[1:100, "inertia*"], type = "b", lwd = 3,
      main = "Elbow method: Inèrcia", xlab = "Nombre de Clústers", ylab = "",
      sub = "Sembla que el 5 o 6 és el nombre òptim de clústers")
 
-plot(x = c, y = resum_kmeans[, "calinski"], type = "b", lwd = 3,
+plot(x = c[1:150], y = resum_kmeans[1:150, "calinski"], type = "b", lwd = 3,
      main = "Elbow method: Calinski", xlab = "Nombre de Clústers", ylab = "",
      sub = "Sembla que el 5 o 6 és el nombre òptim de clústers")
 
