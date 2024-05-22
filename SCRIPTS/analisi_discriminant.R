@@ -164,7 +164,6 @@ pairs(x = train[, num], col = c("firebrick", "green3", "darkblue", "pink", "oran
 #dev.off()
 
 ### Variables categòriques
-## PROBLEMA: PUNTS SURTEN A LES CANTONADES --> CORREU SERGI
 city<-c(9:12)
 cons_per<-c(28:36)
 # Fem aquest gràfic per cada grup de categòriques
@@ -239,7 +238,6 @@ klaR::partimat(train[,"cluster_group"] ~ ., data = train[,num], method = "lda",
                image.colors = c("skyblue", "lightgrey", "yellow","pink","orange","green"), col.mean = "red")
 
 # Variables categòriques
-### PROBLEMA: SURT ERROR --> CORREU SERGI
 klaR::partimat(train[,"cluster_group"] ~ ., data = train[,10:12], method = "lda", 
                image.colors = c("skyblue", "lightgrey", "yellow","pink","orange","green"), col.mean = "red")
 
